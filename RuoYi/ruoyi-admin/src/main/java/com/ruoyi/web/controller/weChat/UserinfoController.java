@@ -47,24 +47,6 @@ public class UserinfoController extends BaseController
 
 
     /**
-     * @Author ZhangGY
-     * @Description //TODO 根据openID查询人员列表
-     * @Date 18:01 2021/1/7
-     * @Param openID
-     * @return
-     **/
-    @PostMapping("/findUserListByOpenId")
-    @ResponseBody
-    public Userinfo findUserListByOpenId(String openId){
-        if (openId != null){
-            Userinfo list = userinfoService.selectUserinfoByOpenId(openId);
-            return list;
-        }
-        return null;
-    }
-
-
-    /**
      * 查询人员管理列表
      */
     @RequiresPermissions("system:userinfo:list")
