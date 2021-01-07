@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ResearchGroupsMapper">
+    
+    <resultMap type="ResearchGroups" id="ResearchGroupsResult">
+        <result property="id"    column="id"    />
+        <result property="researchGroup"    column="research_group"    />
+        <result property="unitid"    column="unitid"    />
+    </resultMap>
+
+    <sql id="selectResearchGroupsVo">
+        select id, research_group, unitid from research_groups
+    </sql>
+
+    <select id="selectResearchGroupsList" parameterType="ResearchGroups" resultMap="ResearchGroupsResult">
+        <include refid="selectResearchGroupsVo"/>
+        <where>  
+            <if test="researchGroup != null  and researchGroup != ''"> and research_group = #{researchGroup}</if>
+            <if test="unitid != null "> and unitid = #{unitid}</if>
+        </where>
+    </select>
+    
+    <select id="selectResearchGroupsById" parameterType="Long" resultMap="ResearchGroupsResult">
+        <include refid="selectResearchGroupsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertResearchGroups" parameterType="ResearchGroups" useGeneratedKeys="true" keyProperty="id">
+        insert into research_groups
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="researchGroup != null and researchGroup != ''">research_group,</if>
+            <if test="unitid != null">unitid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="researchGroup != null and researchGroup != ''">#{researchGroup},</if>
+            <if test="unitid != null">#{unitid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateResearchGroups" parameterType="ResearchGroups">
+        update research_groups
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="researchGroup != null and researchGroup != ''">research_group = #{researchGroup},</if>
+            <if test="unitid != null">unitid = #{unitid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteResearchGroupsById" parameterType="Long">
+        delete from research_groups where id = #{id}
+    </delete>
+
+    <delete id="deleteResearchGroupsByIds" parameterType="String">
+        delete from research_groups where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

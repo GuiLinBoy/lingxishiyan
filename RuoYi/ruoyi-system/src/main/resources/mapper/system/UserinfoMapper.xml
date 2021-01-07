@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.UserinfoMapper">
+    
+    <resultMap type="Userinfo" id="UserinfoResult">
+        <result property="id"    column="id"    />
+        <result property="openid"    column="openid"    />
+        <result property="wechatname"    column="wechatname"    />
+        <result property="realname"    column="realname"    />
+        <result property="unitid"    column="unitid"    />
+        <result property="researchGroupId"    column="research_group_id"    />
+        <result property="jurisdiction"    column="jurisdiction"    />
+        <result property="position"    column="position"    />
+        <result property="studentSchool"    column="student_school"    />
+        <result property="studentCometime"    column="student_cometime"    />
+    </resultMap>
+
+    <sql id="selectUserinfoVo">
+        select id, openid, wechatname, realname, unitid, research_group_id, jurisdiction, position, student_school, student_cometime from userinfo
+    </sql>
+
+    <select id="selectUserinfoList" parameterType="Userinfo" resultMap="UserinfoResult">
+        <include refid="selectUserinfoVo"/>
+        <where>  
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="wechatname != null  and wechatname != ''"> and wechatname like concat('%', #{wechatname}, '%')</if>
+            <if test="realname != null  and realname != ''"> and realname like concat('%', #{realname}, '%')</if>
+            <if test="unitid != null "> and unitid = #{unitid}</if>
+            <if test="researchGroupId != null "> and research_group_id = #{researchGroupId}</if>
+            <if test="jurisdiction != null "> and jurisdiction = #{jurisdiction}</if>
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="studentSchool != null  and studentSchool != ''"> and student_school = #{studentSchool}</if>
+            <if test="studentCometime != null "> and student_cometime = #{studentCometime}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserinfoById" parameterType="Long" resultMap="UserinfoResult">
+        <include refid="selectUserinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUserinfo" parameterType="Userinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into userinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openid != null and openid != ''">openid,</if>
+            <if test="wechatname != null and wechatname != ''">wechatname,</if>
+            <if test="realname != null and realname != ''">realname,</if>
+            <if test="unitid != null">unitid,</if>
+            <if test="researchGroupId != null">research_group_id,</if>
+            <if test="jurisdiction != null">jurisdiction,</if>
+            <if test="position != null and position != ''">position,</if>
+            <if test="studentSchool != null">student_school,</if>
+            <if test="studentCometime != null">student_cometime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openid != null and openid != ''">#{openid},</if>
+            <if test="wechatname != null and wechatname != ''">#{wechatname},</if>
+            <if test="realname != null and realname != ''">#{realname},</if>
+            <if test="unitid != null">#{unitid},</if>
+            <if test="researchGroupId != null">#{researchGroupId},</if>
+            <if test="jurisdiction != null">#{jurisdiction},</if>
+            <if test="position != null and position != ''">#{position},</if>
+            <if test="studentSchool != null">#{studentSchool},</if>
+            <if test="studentCometime != null">#{studentCometime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserinfo" parameterType="Userinfo">
+        update userinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openid != null and openid != ''">openid = #{openid},</if>
+            <if test="wechatname != null and wechatname != ''">wechatname = #{wechatname},</if>
+            <if test="realname != null and realname != ''">realname = #{realname},</if>
+            <if test="unitid != null">unitid = #{unitid},</if>
+            <if test="researchGroupId != null">research_group_id = #{researchGroupId},</if>
+            <if test="jurisdiction != null">jurisdiction = #{jurisdiction},</if>
+            <if test="position != null and position != ''">position = #{position},</if>
+            <if test="studentSchool != null">student_school = #{studentSchool},</if>
+            <if test="studentCometime != null">student_cometime = #{studentCometime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserinfoById" parameterType="Long">
+        delete from userinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteUserinfoByIds" parameterType="String">
+        delete from userinfo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

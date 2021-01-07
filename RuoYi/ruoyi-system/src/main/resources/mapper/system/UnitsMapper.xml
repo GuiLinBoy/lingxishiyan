@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.UnitsMapper">
+    
+    <resultMap type="Units" id="UnitsResult">
+        <result property="id"    column="id"    />
+        <result property="unitname"    column="unitname"    />
+    </resultMap>
+
+    <sql id="selectUnitsVo">
+        select id, unitname from units
+    </sql>
+
+    <select id="selectUnitsList" parameterType="Units" resultMap="UnitsResult">
+        <include refid="selectUnitsVo"/>
+        <where>  
+            <if test="unitname != null  and unitname != ''"> and unitname like concat('%', #{unitname}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectUnitsById" parameterType="Long" resultMap="UnitsResult">
+        <include refid="selectUnitsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnits" parameterType="Units" useGeneratedKeys="true" keyProperty="id">
+        insert into units
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="unitname != null and unitname != ''">unitname,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="unitname != null and unitname != ''">#{unitname},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnits" parameterType="Units">
+        update units
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="unitname != null and unitname != ''">unitname = #{unitname},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnitsById" parameterType="Long">
+        delete from units where id = #{id}
+    </delete>
+
+    <delete id="deleteUnitsByIds" parameterType="String">
+        delete from units where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
