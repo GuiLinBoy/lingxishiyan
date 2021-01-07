@@ -91,4 +91,12 @@ public class UnitsServiceImpl implements IUnitsService
     {
         return unitsMapper.deleteUnitsById(id);
     }
+
+    @Override
+    public List<Units> findUnitsLike(String unitName) {
+        if (unitName != null && !unitName.isEmpty())
+            return unitsMapper.findUnitsLike(unitName);
+        else
+            return null;
+    }
 }

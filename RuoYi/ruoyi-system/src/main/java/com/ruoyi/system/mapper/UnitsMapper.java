@@ -58,4 +58,13 @@ public interface UnitsMapper
      * @return 结果
      */
     public int deleteUnitsByIds(String[] ids);
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 根据单位名称模糊查询
+     * @Date 22:36 2021/1/7
+     * @Param 单位名称
+     * @return 单位列表
+     **/
+    public List<Units> findUnitsLike(String unitName);
 }

@@ -13,6 +13,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, unitname from units
     </sql>
 
+    <select id="findUnitsLike" parameterType="String" resultMap="UnitsResult">
+        select * from units
+        <where>
+            <if test="unitname != null and unitname != ''">
+                and unitname like concat('%',#{unitName},'%')
+            </if>
+        </where>
+    </select>
+
+
     <select id="selectUnitsList" parameterType="Units" resultMap="UnitsResult">
         <include refid="selectUnitsVo"/>
         <where>  

@@ -58,4 +58,6 @@ public interface IUnitsService
      * @return 结果
      */
     public int deleteUnitsById(Long id);
+
+    public List<Units> findUnitsLike(String unitName);
 }
