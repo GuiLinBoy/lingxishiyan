@@ -3,19 +3,17 @@ package com.ruoyi.web.controller.weChat;
 import com.ruoyi.system.domain.Userinfo;
 import com.ruoyi.system.service.IResearchGroupsService;
 import com.ruoyi.system.service.IUserinfoService;
+import com.ruoyi.web.controller.tool.UserInfoUnTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Classname WeChatUserInfoController
  * @Author ZhangGY
  * @Date 2021/1/7 20:10
  **/
-@Controller
+@RestController
 @RequestMapping("/weChat")
 public class WeChatUserInfoController {
 
@@ -50,7 +48,11 @@ public class WeChatUserInfoController {
      **/
     @PostMapping("/insetUserInfo")
     @ResponseBody
-    public int insetUserInfo(Userinfo userinfo, String researchGroupName){
+    public int insetUserInfo(@RequestBody UserInfoUnTool userInfoUnTool){
+
+
+        Userinfo userinfo = userInfoUnTool.getUserinfo();
+        String researchGroupName = userInfoUnTool.getResearchGroupName();
 
         if (userinfo != null && !researchGroupName.equals("")){
             Long unitId = researchGroupsService.findAndSaveByName(researchGroupName,userinfo.getUnitid());
