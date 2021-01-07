@@ -67,4 +67,6 @@ public interface IUserinfoService
      * @return
      **/
     Userinfo selectUserinfoByOpenId(String openId);
+
+    int insertAndUpdateUserInfo(Userinfo userinfo);
 }

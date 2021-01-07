@@ -58,4 +58,8 @@ public interface IResearchGroupsService
      * @return 结果
      */
     public int deleteResearchGroupsById(Long id);
+
+    public Long findAndSaveByName(String researchGroupName, Long  unitid);
+
+    public ResearchGroups findByName(String researchGroupName);
 }

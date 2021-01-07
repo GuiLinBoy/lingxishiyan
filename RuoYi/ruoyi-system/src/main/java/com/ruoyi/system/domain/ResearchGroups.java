@@ -6,7 +6,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 研究组管理对象 research_groups
+ * 课题组管理对象 research_groups
  * 
  * @author ruoyi
  * @date 2021-01-07

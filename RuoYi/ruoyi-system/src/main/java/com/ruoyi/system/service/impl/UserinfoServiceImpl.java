@@ -59,6 +59,21 @@ public class UserinfoServiceImpl implements IUserinfoService
     }
 
     /**
+     * @Author ZhangGY
+     * @Description //TODO WeChat更新或插入人员
+     * @Date 21:32 2021/1/7
+     * @Param
+     * @return
+     **/
+    @Override
+    public int insertAndUpdateUserInfo(Userinfo userinfo) {
+        if (userinfo.getId() != null)
+            return this.updateUserinfo(userinfo);
+        else
+           return this.insertUserinfo(userinfo);
+    }
+
+    /**
      * 修改人员管理
      * 
      * @param userinfo 人员管理

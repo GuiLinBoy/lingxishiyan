@@ -9,7 +9,7 @@ import com.ruoyi.system.service.IResearchGroupsService;
 import com.ruoyi.common.core.text.Convert;
 
 /**
- * 研究组管理Service业务层处理
+ * 课题组管理Service业务层处理
  * 
  * @author ruoyi
  * @date 2021-01-07
@@ -21,10 +21,10 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
     private ResearchGroupsMapper researchGroupsMapper;
 
     /**
-     * 查询研究组管理
+     * 查询课题组管理
      * 
-     * @param id 研究组管理ID
-     * @return 研究组管理
+     * @param id 课题组管理ID
+     * @return 课题组管理
      */
     @Override
     public ResearchGroups selectResearchGroupsById(Long id)
@@ -33,10 +33,10 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
     }
 
     /**
-     * 查询研究组管理列表
+     * 查询课题组管理列表
      * 
-     * @param researchGroups 研究组管理
-     * @return 研究组管理
+     * @param researchGroups 课题组管理
+     * @return 课题组管理
      */
     @Override
     public List<ResearchGroups> selectResearchGroupsList(ResearchGroups researchGroups)
@@ -44,10 +44,29 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
         return researchGroupsMapper.selectResearchGroupsList(researchGroups);
     }
 
+    @Override
+    public Long findAndSaveByName(String researchGroupName, Long unitid) {
+        ResearchGroups researchGroups = this.findByName(researchGroupName);
+       if (researchGroups == null){
+           researchGroups.setResearchGroup(researchGroupName);
+           researchGroups.setUnitid(unitid);
+           this.insertResearchGroups(researchGroups);
+       }
+        return this.findByName(researchGroupName).getId();
+    }
+
+    @Override
+    public ResearchGroups findByName(String researchGroupName) {
+        if (researchGroupName != null)
+           return researchGroupsMapper.selectResearchGroupsByName(researchGroupName);
+        else
+            return null;
+    }
+
     /**
-     * 新增研究组管理
+     * 新增课题组管理
      * 
-     * @param researchGroups 研究组管理
+     * @param researchGroups 课题组管理
      * @return 结果
      */
     @Override
@@ -56,10 +75,11 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
         return researchGroupsMapper.insertResearchGroups(researchGroups);
     }
 
+
     /**
-     * 修改研究组管理
+     * 修改课题组管理
      * 
-     * @param researchGroups 研究组管理
+     * @param researchGroups 课题组管理
      * @return 结果
      */
     @Override
@@ -69,7 +89,7 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
     }
 
     /**
-     * 删除研究组管理对象
+     * 删除课题组管理对象
      * 
      * @param ids 需要删除的数据ID
      * @return 结果
@@ -81,9 +101,9 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
     }
 
     /**
-     * 删除研究组管理信息
+     * 删除课题组管理信息
      * 
-     * @param id 研究组管理ID
+     * @param id 课题组管理ID
      * @return 结果
      */
     @Override

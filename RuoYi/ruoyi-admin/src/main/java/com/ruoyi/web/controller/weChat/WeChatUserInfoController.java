@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.weChat;
 
 import com.ruoyi.system.domain.Userinfo;
+import com.ruoyi.system.service.IResearchGroupsService;
 import com.ruoyi.system.service.IUserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ public class WeChatUserInfoController {
     @Autowired
     private IUserinfoService userinfoService;
 
+    @Autowired
+    private IResearchGroupsService researchGroupsService;
     /**
      * @Author ZhangGY
      * @Description //TODO 根据openID查询人员列表
@@ -38,4 +41,24 @@ public class WeChatUserInfoController {
         return null;
     }
 
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 插入用户信息
+     * @Date 20:45 2021/1/7
+     * @Param userInfo
+     * @return -1：userinfo 为空 ；0：researchGroupName为空
+     **/
+    @PostMapping("/insetUserInfo")
+    @ResponseBody
+    public int insetUserInfo(Userinfo userinfo, String researchGroupName){
+
+        if (userinfo != null && !researchGroupName.equals("")){
+            Long unitId = researchGroupsService.findAndSaveByName(researchGroupName,userinfo.getUnitid());
+            userinfo.setUnitid(unitId);
+            return userinfoService.insertAndUpdateUserInfo(userinfo);
+        }else if (researchGroupName == null)
+            return 0;
+        else
+            return -1;
+    }
 }
