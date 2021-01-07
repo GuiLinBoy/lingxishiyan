@@ -58,4 +58,13 @@ public interface IUserinfoService
      * @return 结果
      */
     public int deleteUserinfoById(Long id);
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO根据openID查询列表
+     * @Date 18:12 2021/1/7
+     * @Param
+     * @return
+     **/
+    Userinfo selectUserinfoByOpenId(String openId);
 }

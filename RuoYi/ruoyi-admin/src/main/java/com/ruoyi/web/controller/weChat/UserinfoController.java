@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.weChat;
 
 import java.util.List;
+
+import org.apache.catalina.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+
+import javax.jws.soap.SOAPBinding;
 
 /**
  * 人员管理Controller
@@ -40,6 +44,25 @@ public class UserinfoController extends BaseController
     {
         return prefix + "/userinfo";
     }
+
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 根据openID查询人员列表
+     * @Date 18:01 2021/1/7
+     * @Param openID
+     * @return
+     **/
+    @PostMapping("/findUserListByOpenId")
+    @ResponseBody
+    public Userinfo findUserListByOpenId(String openId){
+        if (openId != null){
+            Userinfo list = userinfoService.selectUserinfoByOpenId(openId);
+            return list;
+        }
+        return null;
+    }
+
 
     /**
      * 查询人员管理列表

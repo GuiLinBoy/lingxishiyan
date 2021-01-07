@@ -58,4 +58,6 @@ public interface UserinfoMapper
      * @return 结果
      */
     public int deleteUserinfoByIds(String[] ids);
+
+    Userinfo selectUserinfoByOpenId(String openId);
 }

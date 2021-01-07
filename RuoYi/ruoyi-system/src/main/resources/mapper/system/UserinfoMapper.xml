@@ -40,6 +40,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectUserinfoVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectUserinfoByOpenId" parameterType="String" resultMap="UserinfoResult">
+        <include refid="selectUserinfoVo"/>
+        where openid = #{openId}
+    </select>
         
     <insert id="insertUserinfo" parameterType="Userinfo" useGeneratedKeys="true" keyProperty="id">
         insert into userinfo

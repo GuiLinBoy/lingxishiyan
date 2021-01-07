@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.UserinfoMapper;
@@ -90,5 +92,10 @@ public class UserinfoServiceImpl implements IUserinfoService
     public int deleteUserinfoById(Long id)
     {
         return userinfoMapper.deleteUserinfoById(id);
+    }
+
+    @Override
+    public Userinfo selectUserinfoByOpenId(String openId) {
+        return userinfoMapper.selectUserinfoByOpenId(openId);
     }
 }
