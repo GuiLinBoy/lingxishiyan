@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.NotepadMapper">
+    
+    <resultMap type="Notepad" id="NotepadResult">
+        <result property="id"    column="id"    />
+        <result property="userid"    column="userid"    />
+        <result property="experimentName"    column="experiment_name"    />
+        <result property="description1"    column="description1"    />
+        <result property="description2"    column="description2"    />
+        <result property="description3"    column="description3"    />
+        <result property="steps"    column="steps"    />
+    </resultMap>
+
+    <sql id="selectNotepadVo">
+        select id, userid, experiment_name, description1, description2, description3, steps from notepad
+    </sql>
+
+    <select id="selectNotepadList" parameterType="Notepad" resultMap="NotepadResult">
+        <include refid="selectNotepadVo"/>
+        <where>  
+            <if test="userid != null "> and userid = #{userid}</if>
+            <if test="experimentName != null  and experimentName != ''"> and experiment_name like concat('%', #{experimentName}, '%')</if>
+            <if test="description1 != null  and description1 != ''"> and description1 = #{description1}</if>
+            <if test="description2 != null  and description2 != ''"> and description2 = #{description2}</if>
+            <if test="description3 != null  and description3 != ''"> and description3 = #{description3}</if>
+            <if test="steps != null "> and steps = #{steps}</if>
+        </where>
+    </select>
+    
+    <select id="selectNotepadById" parameterType="Long" resultMap="NotepadResult">
+        <include refid="selectNotepadVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNotepad" parameterType="Notepad" useGeneratedKeys="true" keyProperty="id">
+        insert into notepad
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userid != null">userid,</if>
+            <if test="experimentName != null and experimentName != ''">experiment_name,</if>
+            <if test="description1 != null and description1 != ''">description1,</if>
+            <if test="description2 != null and description2 != ''">description2,</if>
+            <if test="description3 != null and description3 != ''">description3,</if>
+            <if test="steps != null">steps,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userid != null">#{userid},</if>
+            <if test="experimentName != null and experimentName != ''">#{experimentName},</if>
+            <if test="description1 != null and description1 != ''">#{description1},</if>
+            <if test="description2 != null and description2 != ''">#{description2},</if>
+            <if test="description3 != null and description3 != ''">#{description3},</if>
+            <if test="steps != null">#{steps},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNotepad" parameterType="Notepad">
+        update notepad
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userid != null">userid = #{userid},</if>
+            <if test="experimentName != null and experimentName != ''">experiment_name = #{experimentName},</if>
+            <if test="description1 != null and description1 != ''">description1 = #{description1},</if>
+            <if test="description2 != null and description2 != ''">description2 = #{description2},</if>
+            <if test="description3 != null and description3 != ''">description3 = #{description3},</if>
+            <if test="steps != null">steps = #{steps},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNotepadById" parameterType="Long">
+        delete from notepad where id = #{id}
+    </delete>
+
+    <delete id="deleteNotepadByIds" parameterType="String">
+        delete from notepad where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

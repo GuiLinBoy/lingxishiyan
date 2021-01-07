@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增登记信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-info-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">登记名称：</label>
+                <div class="col-sm-8">
+                    <input name="reagentName" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">制造商：</label>
+                <div class="col-sm-8">
+                    <input name="manufacturer" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">经销商：</label>
+                <div class="col-sm-8">
+                    <input name="dealer" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">货号：</label>
+                <div class="col-sm-8">
+                    <input name="goodsid" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">存量情况；0充足，1尚可，2不足：</label>
+                <div class="col-sm-8">
+                    <input name="stockstate" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">实验用途：</label>
+                <div class="col-sm-8">
+                    <input name="experimentuse" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">保管人：</label>
+                <div class="col-sm-8">
+                    <input name="preserver" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">订购时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="orderTimes" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">登记人：</label>
+                <div class="col-sm-8">
+                    <input name="registerUser" class="form-control" type="text" required>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/info"
+        $("#form-info-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-info-add').serialize());
+            }
+        }
+
+        $("input[name='orderTimes']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RegisterInfoMapper">
+    
+    <resultMap type="RegisterInfo" id="RegisterInfoResult">
+        <result property="id"    column="id"    />
+        <result property="reagentName"    column="reagent_name"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="dealer"    column="dealer"    />
+        <result property="goodsid"    column="goodsid"    />
+        <result property="stockstate"    column="stockstate"    />
+        <result property="experimentuse"    column="experimentuse"    />
+        <result property="preserver"    column="preserver"    />
+        <result property="orderTimes"    column="order_times"    />
+        <result property="registerUser"    column="register_user"    />
+    </resultMap>
+
+    <sql id="selectRegisterInfoVo">
+        select id, reagent_name, manufacturer, dealer, goodsid, stockstate, experimentuse, preserver, order_times, register_user from register_info
+    </sql>
+
+    <select id="selectRegisterInfoList" parameterType="RegisterInfo" resultMap="RegisterInfoResult">
+        <include refid="selectRegisterInfoVo"/>
+        <where>  
+            <if test="reagentName != null "> and reagent_name like concat('%', #{reagentName}, '%')</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
+            <if test="dealer != null  and dealer != ''"> and dealer = #{dealer}</if>
+            <if test="goodsid != null  and goodsid != ''"> and goodsid = #{goodsid}</if>
+            <if test="stockstate != null "> and stockstate = #{stockstate}</if>
+            <if test="experimentuse != null  and experimentuse != ''"> and experimentuse = #{experimentuse}</if>
+            <if test="preserver != null "> and preserver = #{preserver}</if>
+            <if test="orderTimes != null "> and order_times = #{orderTimes}</if>
+            <if test="registerUser != null "> and register_user = #{registerUser}</if>
+        </where>
+    </select>
+    
+    <select id="selectRegisterInfoById" parameterType="Long" resultMap="RegisterInfoResult">
+        <include refid="selectRegisterInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRegisterInfo" parameterType="RegisterInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into register_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reagentName != null">reagent_name,</if>
+            <if test="manufacturer != null and manufacturer != ''">manufacturer,</if>
+            <if test="dealer != null and dealer != ''">dealer,</if>
+            <if test="goodsid != null and goodsid != ''">goodsid,</if>
+            <if test="stockstate != null">stockstate,</if>
+            <if test="experimentuse != null and experimentuse != ''">experimentuse,</if>
+            <if test="preserver != null">preserver,</if>
+            <if test="orderTimes != null">order_times,</if>
+            <if test="registerUser != null">register_user,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reagentName != null">#{reagentName},</if>
+            <if test="manufacturer != null and manufacturer != ''">#{manufacturer},</if>
+            <if test="dealer != null and dealer != ''">#{dealer},</if>
+            <if test="goodsid != null and goodsid != ''">#{goodsid},</if>
+            <if test="stockstate != null">#{stockstate},</if>
+            <if test="experimentuse != null and experimentuse != ''">#{experimentuse},</if>
+            <if test="preserver != null">#{preserver},</if>
+            <if test="orderTimes != null">#{orderTimes},</if>
+            <if test="registerUser != null">#{registerUser},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRegisterInfo" parameterType="RegisterInfo">
+        update register_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reagentName != null">reagent_name = #{reagentName},</if>
+            <if test="manufacturer != null and manufacturer != ''">manufacturer = #{manufacturer},</if>
+            <if test="dealer != null and dealer != ''">dealer = #{dealer},</if>
+            <if test="goodsid != null and goodsid != ''">goodsid = #{goodsid},</if>
+            <if test="stockstate != null">stockstate = #{stockstate},</if>
+            <if test="experimentuse != null and experimentuse != ''">experimentuse = #{experimentuse},</if>
+            <if test="preserver != null">preserver = #{preserver},</if>
+            <if test="orderTimes != null">order_times = #{orderTimes},</if>
+            <if test="registerUser != null">register_user = #{registerUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRegisterInfoById" parameterType="Long">
+        delete from register_info where id = #{id}
+    </delete>
+
+    <delete id="deleteRegisterInfoByIds" parameterType="String">
+        delete from register_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
