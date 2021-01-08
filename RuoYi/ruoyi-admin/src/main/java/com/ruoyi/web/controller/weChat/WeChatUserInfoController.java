@@ -51,11 +51,8 @@ public class WeChatUserInfoController {
     @PostMapping("/insetUserInfo")
     @ResponseBody
     public int insetUserInfo(@RequestBody UserInfoUnTool userInfoUnTool){
-
-
         Userinfo userinfo = userInfoUnTool.getUserinfo();
         String researchGroupName = userInfoUnTool.getResearchGroupName();
-
         if (userinfo != null && !researchGroupName.equals("")){
             Long researchGroupId = researchGroupsService.findAndSaveByName(researchGroupName,userinfo.getUnitid());
             userinfo.setResearchGroupId(researchGroupId);

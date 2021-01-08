@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stockstate != null">#{stockstate},</if>
             <if test="experimentuse != null and experimentuse != ''">#{experimentuse},</if>
             <if test="preserver != null">#{preserver},</if>
-            <if test="orderTimes != null">#{orderTimes},</if>
+            <if test="orderTimes != null">#{orderTimes,jdbcType=TIMESTAMP},</if>
             <if test="registerUser != null">#{registerUser},</if>
          </trim>
     </insert>
