@@ -69,4 +69,6 @@ public interface IUserinfoService
     Userinfo selectUserinfoByOpenId(String openId);
 
     int insertAndUpdateUserInfo(Userinfo userinfo);
+
+    List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId);
 }

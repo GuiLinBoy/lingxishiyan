@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.Userinfo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 人员管理Mapper接口
@@ -60,4 +61,6 @@ public interface UserinfoMapper
     public int deleteUserinfoByIds(String[] ids);
 
     Userinfo selectUserinfoByOpenId(String openId);
+
+    List<Userinfo> selectUserByGroupIdAunitid(@Param("unitid") Integer unitid,@Param("researchGroupId") Integer researchGroupId);
 }

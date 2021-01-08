@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Classname WeChatUserInfoController
  * @Author ZhangGY
@@ -62,5 +64,22 @@ public class WeChatUserInfoController {
             return 0;
         else
             return -1;
+    }
+
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 根据单位和课题组查询教授和老师
+     * @Date 16:22 2021/1/8
+     * @Param [unitid, researchGroupId]
+     * @return List<Userinfo>
+     **/
+    @ResponseBody
+    @RequestMapping("/findUserByGroupIdAunitid")
+    public List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId){
+        if (unitid != null && researchGroupId != null){
+            return userinfoService.findUserByGroupIdAunitid(unitid,researchGroupId);
+        }else
+            return null;
     }
 }

@@ -34,6 +34,12 @@ public class UserinfoServiceImpl implements IUserinfoService
         return userinfoMapper.selectUserinfoById(id);
     }
 
+
+    @Override
+    public List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId) {
+        return userinfoMapper.selectUserByGroupIdAunitid(unitid,researchGroupId);
+    }
+
     /**
      * 查询人员管理列表
      * 

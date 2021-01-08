@@ -45,6 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectUserinfoVo"/>
         where openid = #{openId}
     </select>
+
+    <select id="selectUserByGroupIdAunitid" parameterType="Integer" resultMap="UserinfoResult">
+        <include refid="selectUserinfoVo"/>
+        where research_group_id = #{researchGroupId} and unitid = #{unitid} and (jurisdiction = 0 or  jurisdiction = 1)
+    </select>
         
     <insert id="insertUserinfo" parameterType="Userinfo" useGeneratedKeys="true" keyProperty="id">
         insert into userinfo
