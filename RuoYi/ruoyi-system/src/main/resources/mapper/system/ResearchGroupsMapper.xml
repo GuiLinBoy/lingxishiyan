@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectResearchGroupsByName" parameterType="String" resultMap="ResearchGroupsResult">
         <include refid="selectResearchGroupsVo"/>
-        where researchGroup = #{researchGroupName}
+        where research_group = #{researchGroupName}
     </select>
         
     <insert id="insertResearchGroups" parameterType="ResearchGroups" useGeneratedKeys="true" keyProperty="id">
