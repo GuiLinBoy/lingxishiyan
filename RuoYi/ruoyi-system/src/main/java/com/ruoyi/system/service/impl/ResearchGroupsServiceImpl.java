@@ -48,6 +48,7 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
     public Long findAndSaveByName(String researchGroupName, Long unitid) {
         ResearchGroups researchGroups = this.findByName(researchGroupName);
        if (researchGroups == null){
+           researchGroups = new ResearchGroups();
            researchGroups.setResearchGroup(researchGroupName);
            researchGroups.setUnitid(unitid);
            this.insertResearchGroups(researchGroups);
