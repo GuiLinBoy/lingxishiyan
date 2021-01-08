@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.RegisterInfoMapper;
@@ -30,6 +32,22 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
     public RegisterInfo selectRegisterInfoById(Long id)
     {
         return registerInfoMapper.selectRegisterInfoById(id);
+    }
+
+    @Override
+    public List<RegisterInfo> selectRegisterInfoByUserId(Integer registerUser) {
+        if (registerUser != null){
+            return registerInfoMapper.selectRegisterInfoByUserId(registerUser);
+        }
+        return null;
+    }
+
+    @Override
+    public int saveAndUpdateRegisterInfo(RegisterInfo registerInfo) {
+        if (registerInfo.getId() != null){
+            return registerInfoMapper.updateRegisterInfo(registerInfo);
+        }else
+            return registerInfoMapper.insertRegisterInfo(registerInfo);
     }
 
     /**

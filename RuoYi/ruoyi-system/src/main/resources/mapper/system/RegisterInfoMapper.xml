@@ -40,6 +40,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectRegisterInfoVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectRegisterInfoByUserId" parameterType="Integer" resultMap="RegisterInfoResult">
+        <include refid="selectRegisterInfoVo"/>
+        where register_user = #{registerUser}
+    </select>
         
     <insert id="insertRegisterInfo" parameterType="RegisterInfo" useGeneratedKeys="true" keyProperty="id">
         insert into register_info

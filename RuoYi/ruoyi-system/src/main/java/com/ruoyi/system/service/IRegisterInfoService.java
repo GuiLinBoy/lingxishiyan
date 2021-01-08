@@ -58,4 +58,8 @@ public interface IRegisterInfoService
      * @return 结果
      */
     public int deleteRegisterInfoById(Long id);
+
+    List<RegisterInfo> selectRegisterInfoByUserId(Integer registerUser);
+
+    int saveAndUpdateRegisterInfo(RegisterInfo registerInfo);
 }

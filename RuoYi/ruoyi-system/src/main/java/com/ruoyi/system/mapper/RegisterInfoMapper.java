@@ -58,4 +58,6 @@ public interface RegisterInfoMapper
      * @return 结果
      */
     public int deleteRegisterInfoByIds(String[] ids);
+
+    List<RegisterInfo> selectRegisterInfoByUserId(Integer registerUser);
 }
