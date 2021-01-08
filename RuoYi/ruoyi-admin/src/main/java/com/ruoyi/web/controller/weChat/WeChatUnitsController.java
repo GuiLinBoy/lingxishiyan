@@ -26,8 +26,7 @@ public class WeChatUnitsController {
 
     @ResponseBody
     @RequestMapping("/findUnitsLike")
-    public List<Units> findUnitsLike(String unitName){
-        return unitsService.findUnitsLike(unitName);
+    public List<Units> findUnitsLike(String unitName){ return unitsService.findUnitsLike(unitName);
     }
 
 }

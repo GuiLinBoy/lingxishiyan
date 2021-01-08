@@ -55,8 +55,8 @@ public class WeChatUserInfoController {
         String researchGroupName = userInfoUnTool.getResearchGroupName();
 
         if (userinfo != null && !researchGroupName.equals("")){
-            Long unitId = researchGroupsService.findAndSaveByName(researchGroupName,userinfo.getUnitid());
-            userinfo.setUnitid(unitId);
+            Long researchGroupId = researchGroupsService.findAndSaveByName(researchGroupName,userinfo.getUnitid());
+            userinfo.setResearchGroupId(researchGroupId);
             return userinfoService.insertAndUpdateUserInfo(userinfo);
         }else if (researchGroupName == null)
             return 0;
