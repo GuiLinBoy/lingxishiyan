@@ -46,6 +46,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where register_user = #{registerUser}
     </select>
 
+
+    <select id="selectRegisterByUserId"  parameterType="list" resultMap="RegisterInfoResult">
+        <include refid="selectRegisterInfoVo"/>
+        <where>
+            <if test="userinfoList != null and userinfoList.size()>0">
+                <foreach collection="userinfoList"  separator="," open="and register_user in (" close=")" item="userinfo">
+                    #{userinfo.id,jdbcType=NUMERIC}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
     <insert id="insertRegisterInfo" parameterType="RegisterInfo" useGeneratedKeys="true" keyProperty="id">
         insert into register_info
         <trim prefix="(" suffix=")" suffixOverrides=",">

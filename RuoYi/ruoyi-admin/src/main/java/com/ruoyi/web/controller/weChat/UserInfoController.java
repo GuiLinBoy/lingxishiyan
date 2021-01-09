@@ -1,7 +1,9 @@
 package com.ruoyi.web.controller.weChat;
 
+import com.ruoyi.system.domain.RegisterInfo;
 import com.ruoyi.system.domain.ResearchGroups;
 import com.ruoyi.system.domain.Userinfo;
+import com.ruoyi.system.service.IRegisterInfoService;
 import com.ruoyi.system.service.IResearchGroupsService;
 import com.ruoyi.system.service.IUserinfoService;
 import com.ruoyi.web.controller.tool.UserInfoUnTool;
@@ -9,19 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Classname WeChatUserInfoController
+ * @Classname UserInfoController
  * @Author ZhangGY
  * @Date 2021/1/7 20:10
  **/
 @RestController
 @RequestMapping("/weChat")
-public class WeChatUserInfoController {
+public class UserInfoController {
 
     @Autowired
     private IUserinfoService userinfoService;
+
+    @Autowired
+    private IRegisterInfoService registerInfoService;
 
     @Autowired
     private IResearchGroupsService researchGroupsService;
@@ -92,5 +98,19 @@ public class WeChatUserInfoController {
     @RequestMapping("/findGroupById")
     public ResearchGroups findGroupById(Integer groupId){
         return researchGroupsService.findById(groupId);
+    }
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 查询课题组所有成员的登记信息（老师有权限）
+     * @Date 21:32 2021/1/9
+     * @Param [groupId]
+     * @return  List<RegisterInfo>
+     **/
+    @ResponseBody
+    @RequestMapping("/findRegisterGroupAll")
+    public List<RegisterInfo> findRegisterGroupAll(Integer unitid, Integer groupId){
+        List<Userinfo> userinfoList = userinfoService.findUserByGroupIdAunitid(unitid, groupId);
+        return registerInfoService.selectRegisterByUserId(userinfoList);
     }
 }

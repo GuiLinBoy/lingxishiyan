@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.weChat;
+package com.ruoyi.web.controller.userInfo;
 
 import java.util.List;
 

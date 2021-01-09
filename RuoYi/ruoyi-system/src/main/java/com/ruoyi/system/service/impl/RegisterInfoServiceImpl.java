@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.Userinfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.RegisterInfoMapper;
@@ -38,6 +40,20 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
             return registerInfoMapper.selectRegisterInfoByUserId(registerUser);
         }
         return null;
+    }
+
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 根据每个用户的登记信息（传入用户列表，）
+     * @Date 21:43 2021/1/9
+     * @Param [userinfoList]
+     * @return java.util.List<com.ruoyi.system.domain.RegisterInfo>
+     *
+     **/
+    @Override
+    public List<RegisterInfo> selectRegisterByUserId(List<Userinfo> userinfoList) {
+        return registerInfoMapper.selectRegisterByUserId(userinfoList);
     }
 
     @Override

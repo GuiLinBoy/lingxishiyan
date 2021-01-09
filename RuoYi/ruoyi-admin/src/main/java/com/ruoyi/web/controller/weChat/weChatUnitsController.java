@@ -12,13 +12,13 @@ import sun.net.idn.Punycode;
 import java.util.List;
 
 /**
- * @Classname WeChatUnitsController
+ * @Classname weChatUnitsController
  * @Author ZhangGY
  * @Date 2021/1/7 22:40
  **/
 @Controller
 @RequestMapping("/weChat")
-public class WeChatUnitsController {
+public class weChatUnitsController {
 
 
     @Autowired

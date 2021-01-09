@@ -1,7 +1,9 @@
 package com.ruoyi.system.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.ruoyi.system.domain.RegisterInfo;
+import com.ruoyi.system.domain.Userinfo;
 
 /**
  * 登记信息Service接口
@@ -62,4 +64,6 @@ public interface IRegisterInfoService
     List<RegisterInfo> selectRegisterInfoByUserId(Integer registerUser);
 
     int saveAndUpdateRegisterInfo(RegisterInfo registerInfo);
+
+    List<RegisterInfo> selectRegisterByUserId(List<Userinfo> userinfoList);
 }

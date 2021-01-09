@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.weChat;
+package com.ruoyi.web.controller.researchFroups;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
