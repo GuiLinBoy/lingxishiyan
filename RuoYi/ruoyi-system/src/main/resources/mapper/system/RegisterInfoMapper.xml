@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectRegisterInfoList" parameterType="RegisterInfo" resultMap="RegisterInfoResult">
         <include refid="selectRegisterInfoVo"/>
         <where>  
-            <if test="reagentName != null "> and reagent_name like concat('%', #{reagentName}, '%')</if>
+            <if test="reagentName != null  and reagentName != ''"> and reagent_name like concat('%', #{reagentName}, '%')</if>
             <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
             <if test="dealer != null  and dealer != ''"> and dealer = #{dealer}</if>
             <if test="goodsid != null  and goodsid != ''"> and goodsid = #{goodsid}</if>
@@ -45,11 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectRegisterInfoVo"/>
         where register_user = #{registerUser}
     </select>
-        
+
     <insert id="insertRegisterInfo" parameterType="RegisterInfo" useGeneratedKeys="true" keyProperty="id">
         insert into register_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="reagentName != null">reagent_name,</if>
+            <if test="reagentName != null and reagentName != ''">reagent_name,</if>
             <if test="manufacturer != null and manufacturer != ''">manufacturer,</if>
             <if test="dealer != null and dealer != ''">dealer,</if>
             <if test="goodsid != null and goodsid != ''">goodsid,</if>
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="registerUser != null">register_user,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="reagentName != null">#{reagentName},</if>
+            <if test="reagentName != null and reagentName != ''">#{reagentName},</if>
             <if test="manufacturer != null and manufacturer != ''">#{manufacturer},</if>
             <if test="dealer != null and dealer != ''">#{dealer},</if>
             <if test="goodsid != null and goodsid != ''">#{goodsid},</if>
@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateRegisterInfo" parameterType="RegisterInfo">
         update register_info
         <trim prefix="SET" suffixOverrides=",">
-            <if test="reagentName != null">reagent_name = #{reagentName},</if>
+            <if test="reagentName != null and reagentName != ''">reagent_name = #{reagentName},</if>
             <if test="manufacturer != null and manufacturer != ''">manufacturer = #{manufacturer},</if>
             <if test="dealer != null and dealer != ''">dealer = #{dealer},</if>
             <if test="goodsid != null and goodsid != ''">goodsid = #{goodsid},</if>

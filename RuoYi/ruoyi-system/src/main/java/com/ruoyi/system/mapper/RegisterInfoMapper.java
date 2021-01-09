@@ -7,7 +7,7 @@ import com.ruoyi.system.domain.RegisterInfo;
  * 登记信息Mapper接口
  * 
  * @author ruoyi
- * @date 2021-01-04
+ * @date 2021-01-09
  */
 public interface RegisterInfoMapper 
 {

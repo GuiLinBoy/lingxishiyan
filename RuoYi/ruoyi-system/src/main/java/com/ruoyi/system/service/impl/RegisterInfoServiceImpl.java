@@ -1,8 +1,6 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.RegisterInfoMapper;
@@ -14,7 +12,7 @@ import com.ruoyi.common.core.text.Convert;
  * 登记信息Service业务层处理
  * 
  * @author ruoyi
- * @date 2021-01-04
+ * @date 2021-01-09
  */
 @Service
 public class RegisterInfoServiceImpl implements IRegisterInfoService 

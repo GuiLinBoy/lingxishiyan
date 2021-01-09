@@ -11,7 +11,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 登记信息对象 register_info
  * 
  * @author ruoyi
- * @date 2021-01-04
+ * @date 2021-01-09
  */
 public class RegisterInfo extends BaseEntity
 {
@@ -22,7 +22,7 @@ public class RegisterInfo extends BaseEntity
 
     /** 登记名称 */
     @Excel(name = "登记名称")
-    private Long reagentName;
+    private String reagentName;
 
     /** 制造商 */
     @Excel(name = "制造商")
@@ -66,12 +66,12 @@ public class RegisterInfo extends BaseEntity
     {
         return id;
     }
-    public void setReagentName(Long reagentName) 
+    public void setReagentName(String reagentName) 
     {
         this.reagentName = reagentName;
     }
 
-    public Long getReagentName() 
+    public String getReagentName() 
     {
         return reagentName;
     }
