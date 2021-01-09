@@ -62,4 +62,6 @@ public interface IResearchGroupsService
     public Long findAndSaveByName(String researchGroupName, Long  unitid);
 
     public ResearchGroups findByName(String researchGroupName);
+
+    ResearchGroups findById(Integer groupId);
 }

@@ -60,4 +60,6 @@ public interface IUnitsService
     public int deleteUnitsById(Long id);
 
     public List<Units> findUnitsLike(String unitName);
+
+    Units findUnitsById(Integer unitsId);
 }

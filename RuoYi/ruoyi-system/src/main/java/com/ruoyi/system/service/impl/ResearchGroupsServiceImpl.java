@@ -64,6 +64,13 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
             return null;
     }
 
+    @Override
+    public ResearchGroups findById(Integer groupId) {
+        if (groupId != null) {
+            return this.selectResearchGroupsById(groupId.longValue());
+        }else return null;
+    }
+
     /**
      * 新增课题组管理
      * 

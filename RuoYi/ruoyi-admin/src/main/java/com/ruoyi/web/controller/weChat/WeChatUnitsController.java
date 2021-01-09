@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.net.idn.Punycode;
 
 import java.util.List;
 
@@ -23,6 +24,12 @@ public class WeChatUnitsController {
     @Autowired
     private IUnitsService unitsService;
 
+
+    @ResponseBody
+    @RequestMapping("/findUnitsById")
+    public Units findUnitsById(Integer unitsId){
+        return unitsService.findUnitsById(unitsId);
+    }
 
     @ResponseBody
     @RequestMapping("/findUnitsLike")

@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.weChat;
 
+import com.ruoyi.system.domain.ResearchGroups;
 import com.ruoyi.system.domain.Userinfo;
 import com.ruoyi.system.service.IResearchGroupsService;
 import com.ruoyi.system.service.IUserinfoService;
@@ -78,5 +79,18 @@ public class WeChatUserInfoController {
             return userinfoService.findUserByGroupIdAunitid(unitid,researchGroupId);
         }else
             return null;
+    }
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 根据groupId查询对象
+     * @Date 16:55 2021/1/9
+     * @Param groupID
+     * @return
+     **/
+    @ResponseBody
+    @RequestMapping("/findGroupById")
+    public ResearchGroups findGroupById(Integer groupId){
+        return researchGroupsService.findById(groupId);
     }
 }

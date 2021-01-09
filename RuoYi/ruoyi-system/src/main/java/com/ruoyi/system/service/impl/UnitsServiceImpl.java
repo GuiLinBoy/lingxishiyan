@@ -32,6 +32,14 @@ public class UnitsServiceImpl implements IUnitsService
         return unitsMapper.selectUnitsById(id);
     }
 
+
+    @Override
+    public Units findUnitsById(Integer unitsId) {
+        if (unitsId != null){
+            return this.selectUnitsById(unitsId.longValue());
+        }else return null;
+    }
+
     /**
      * 查询单位管理列表
      * 
