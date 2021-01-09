@@ -102,7 +102,7 @@ public class UserInfoController {
 
     /**
      * @Author ZhangGY
-     * @Description //TODO 查询课题组所有成员的登记信息（老师有权限）
+     * @Description //TODO 查询课题组所有成员的登记信息（老师有权限）（排序）
      * @Date 21:32 2021/1/9
      * @Param [groupId]
      * @return  List<RegisterInfo>

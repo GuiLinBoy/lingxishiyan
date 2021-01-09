@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectRegisterInfoByUserId" parameterType="Integer" resultMap="RegisterInfoResult">
         <include refid="selectRegisterInfoVo"/>
-        where register_user = #{registerUser}
+        where register_user = #{registerUser} order by order_times desc
     </select>
 
 
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectRegisterInfoVo"/>
         <where>
             <if test="userinfoList != null and userinfoList.size()>0">
-                <foreach collection="userinfoList"  separator="," open="and register_user in (" close=")" item="userinfo">
+                <foreach collection="userinfoList"  separator="," open="and register_user in (" close=") order by order_times desc" item="userinfo">
                     #{userinfo.id,jdbcType=NUMERIC}
                 </foreach>
             </if>
