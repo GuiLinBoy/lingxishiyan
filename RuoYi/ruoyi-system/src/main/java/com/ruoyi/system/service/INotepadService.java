@@ -58,4 +58,8 @@ public interface INotepadService
      * @return 结果
      */
     public int deleteNotepadById(Long id);
+
+    List<Notepad> findNotePadByUserId(Integer userId);
+
+    int saveAndUpdateNotePad(Notepad notepad);
 }

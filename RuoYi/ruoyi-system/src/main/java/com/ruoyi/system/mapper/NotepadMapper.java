@@ -58,4 +58,6 @@ public interface NotepadMapper
      * @return 结果
      */
     public int deleteNotepadByIds(String[] ids);
+
+    List<Notepad> findNotePadByUserId(Integer userId);
 }

@@ -91,4 +91,19 @@ public class NotepadServiceImpl implements INotepadService
     {
         return notepadMapper.deleteNotepadById(id);
     }
+
+
+    @Override
+    public List<Notepad> findNotePadByUserId(Integer userId) {
+        return notepadMapper.findNotePadByUserId(userId);
+    }
+
+    @Override
+    public int saveAndUpdateNotePad(Notepad notepad) {
+        if (notepad.getId() != null) {
+            return notepadMapper.updateNotepad(notepad);
+        }else {
+            return notepadMapper.insertNotepad(notepad);
+        }
+    }
 }
