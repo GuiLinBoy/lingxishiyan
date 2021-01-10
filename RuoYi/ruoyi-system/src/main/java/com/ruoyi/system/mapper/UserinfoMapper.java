@@ -1,8 +1,10 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
 import com.ruoyi.system.domain.Userinfo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 人员管理Mapper接口
@@ -10,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @author ruoyi
  * @date 2021-01-07
  */
+@Mapper
 public interface UserinfoMapper 
 {
     /**

@@ -1,11 +1,12 @@
 package com.ruoyi.system.domain;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
 
 /**
  * 人员管理对象 userinfo
@@ -38,6 +39,28 @@ public class Userinfo extends BaseEntity
     /** 课题组 */
     @Excel(name = "课题组")
     private Long researchGroupId;
+
+    /** 工作单位，详情见单位表 */
+    private String unit;
+
+    /** 课题组 */
+    private String researchGroup;
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getResearchGroup() {
+        return researchGroup;
+    }
+
+    public void setResearchGroup(String researchGroup) {
+        this.researchGroup = researchGroup;
+    }
 
     /**  */
     @Excel(name = "")

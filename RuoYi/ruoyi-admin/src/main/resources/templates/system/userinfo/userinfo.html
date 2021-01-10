@@ -11,10 +11,6 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>微信官方返回的openid：</label>
-                                <input type="text" name="openid"/>
-                            </li>
-                            <li>
                                 <label>微信名称：</label>
                                 <input type="text" name="wechatname"/>
                             </li>
@@ -23,7 +19,7 @@
                                 <input type="text" name="realname"/>
                             </li>
                             <li>
-                                <label>工作单位，详情见单位表：</label>
+                                <label>单位</label>
                                 <input type="text" name="unitid"/>
                             </li>
                             <li>
@@ -31,20 +27,8 @@
                                 <input type="text" name="researchGroupId"/>
                             </li>
                             <li>
-                                <label>：</label>
-                                <input type="text" name="jurisdiction"/>
-                            </li>
-                            <li>
-                                <label>职位,三种职位对应着三种不同的权限，prof,teacher,student：</label>
+                                <label>职位</label>
                                 <input type="text" name="position"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="studentSchool"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" class="time-input" placeholder="请选择" name="studentCometime"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -56,9 +40,6 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:userinfo:add">
-                    <i class="fa fa-plus"></i> 添加
-                </a>
                 <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:userinfo:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
@@ -74,6 +55,9 @@
             </div>
         </div>
     </div>
+     <!-- 全局js -->
+     <script src="../../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('system:userinfo:edit')}]];
@@ -83,7 +67,6 @@
         $(function() {
             var options = {
                 url: prefix + "/list",
-                createUrl: prefix + "/add",
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
@@ -105,28 +88,20 @@
                     title: '真实姓名'
                 },
                 {
-                    field: 'unitid',
-                    title: '工作单位，详情见单位表'
+                    field: 'unit',
+                    title: '工作单位'
                 },
                 {
-                    field: 'researchGroupId',
+                    field: 'researchGroup',
                     title: '课题组'
                 },
                 {
-                    field: 'jurisdiction',
-                    title: ''
-                },
-                {
                     field: 'position',
-                    title: '职位,三种职位对应着三种不同的权限，prof,teacher,student'
-                },
-                {
-                    field: 'studentSchool',
-                    title: ''
+                    title: '职位'
                 },
                 {
                     field: 'studentCometime',
-                    title: ''
+                    title: '学生入学时间'
                 },
                 {
                     title: '操作',
@@ -139,6 +114,7 @@
                     }
                 }]
             };
+
             $.table.init(options);
         });
     </script>

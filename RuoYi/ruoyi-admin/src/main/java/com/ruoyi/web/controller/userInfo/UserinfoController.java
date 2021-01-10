@@ -1,27 +1,22 @@
 package com.ruoyi.web.controller.userInfo;
 
-import java.util.List;
-
-import org.apache.catalina.User;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.Units;
+import com.ruoyi.system.domain.Userinfo;
+import com.ruoyi.system.service.IUnitsService;
+import com.ruoyi.system.service.IUserinfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.system.domain.Userinfo;
-import com.ruoyi.system.service.IUserinfoService;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
+import java.util.List;
 
 /**
  * 人员管理Controller
@@ -37,6 +32,9 @@ public class UserinfoController extends BaseController
 
     @Autowired
     private IUserinfoService userinfoService;
+
+    @Autowired
+    private IUnitsService unitsService;
 
     @RequiresPermissions("system:userinfo:view")
     @GetMapping()
@@ -55,7 +53,7 @@ public class UserinfoController extends BaseController
     public TableDataInfo list(Userinfo userinfo)
     {
         startPage();
-        List<Userinfo> list = userinfoService.selectUserinfoList(userinfo);
+        List<Userinfo> list = userinfoService.selectUserinfoListTo(userinfo);
         return getDataTable(list);
     }
 
@@ -82,6 +80,16 @@ public class UserinfoController extends BaseController
         return prefix + "/add";
     }
 
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 查询单位
+     **/
+
+    @ResponseBody
+    @RequestMapping("/findUnit")
+    public List<Units> findUnit(String unitName){
+        return  unitsService.findUnitsLike(unitName);
+    }
     /**
      * 新增保存人员管理
      */

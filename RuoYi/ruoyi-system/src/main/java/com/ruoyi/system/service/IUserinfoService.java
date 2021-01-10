@@ -1,7 +1,8 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.Userinfo;
+
+import java.util.List;
 
 /**
  * 人员管理Service接口
@@ -71,4 +72,6 @@ public interface IUserinfoService
     int insertAndUpdateUserInfo(Userinfo userinfo);
 
     List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId);
+
+    List<Userinfo> selectUserinfoListTo(Userinfo userinfo);
 }

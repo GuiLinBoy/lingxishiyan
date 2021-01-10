@@ -1,14 +1,15 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
-
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.system.domain.Userinfo;
+import com.ruoyi.system.mapper.UserinfoMapper;
+import com.ruoyi.system.service.IResearchGroupsService;
+import com.ruoyi.system.service.IUnitsService;
+import com.ruoyi.system.service.IUserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.UserinfoMapper;
-import com.ruoyi.system.domain.Userinfo;
-import com.ruoyi.system.service.IUserinfoService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.List;
 
 /**
  * 人员管理Service业务层处理
@@ -22,6 +23,12 @@ public class UserinfoServiceImpl implements IUserinfoService
     @Autowired
     private UserinfoMapper userinfoMapper;
 
+
+    @Autowired
+    private IResearchGroupsService researchGroupsService;
+
+    @Autowired
+    private IUnitsService unitsService;
     /**
      * 查询人员管理
      * 
@@ -31,7 +38,12 @@ public class UserinfoServiceImpl implements IUserinfoService
     @Override
     public Userinfo selectUserinfoById(Long id)
     {
-        return userinfoMapper.selectUserinfoById(id);
+        Userinfo userinfo = userinfoMapper.selectUserinfoById(id);
+        String researchGroup = researchGroupsService.selectResearchGroupsById(userinfo.getResearchGroupId()).getResearchGroup();
+        userinfo.setResearchGroup(researchGroup);
+        String unitName = unitsService.selectUnitsById(userinfo.getUnitid()).getUnitname();
+        userinfo.setUnit(unitName);
+        return userinfo;
     }
 
 
@@ -40,6 +52,11 @@ public class UserinfoServiceImpl implements IUserinfoService
         return userinfoMapper.selectUserByGroupIdAunitid(unitid,researchGroupId);
     }
 
+    @Override
+    public List<Userinfo> selectUserinfoList(Userinfo userinfo)
+    {
+        return userinfoMapper.selectUserinfoList(userinfo);
+    }
     /**
      * 查询人员管理列表
      * 
@@ -47,9 +64,19 @@ public class UserinfoServiceImpl implements IUserinfoService
      * @return 人员管理
      */
     @Override
-    public List<Userinfo> selectUserinfoList(Userinfo userinfo)
+    public List<Userinfo> selectUserinfoListTo(Userinfo userinfo)
     {
-        return userinfoMapper.selectUserinfoList(userinfo);
+        List<Userinfo> userinfoList = userinfoMapper.selectUserinfoList(userinfo);
+
+        for (Userinfo info:userinfoList){
+            Long unitid = info.getUnitid();
+            Long researchGroupId = info.getResearchGroupId();
+            String researchGroupName = researchGroupsService.selectResearchGroupsById(researchGroupId).getResearchGroup();
+            String unitName = unitsService.selectUnitsById(unitid).getUnitname();
+            info.setUnit(unitName);
+            info.setResearchGroup(researchGroupName);
+        }
+        return userinfoList;
     }
 
     /**
