@@ -1,14 +1,16 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
-
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.system.domain.RegisterInfo;
 import com.ruoyi.system.domain.Userinfo;
+import com.ruoyi.system.mapper.RegisterInfoMapper;
+import com.ruoyi.system.service.IRegisterInfoService;
+import com.ruoyi.system.service.IUserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.RegisterInfoMapper;
-import com.ruoyi.system.domain.RegisterInfo;
-import com.ruoyi.system.service.IRegisterInfoService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 登记信息Service业务层处理
@@ -22,6 +24,8 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
     @Autowired
     private RegisterInfoMapper registerInfoMapper;
 
+    @Autowired
+    private IUserinfoService userinfoService;
     /**
      * 查询登记信息
      * 
@@ -29,9 +33,18 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
      * @return 登记信息
      */
     @Override
-    public RegisterInfo selectRegisterInfoById(Long id)
+    public List selectRegisterInfoById(Long id)
     {
-        return registerInfoMapper.selectRegisterInfoById(id);
+        RegisterInfo registerInfo = registerInfoMapper.selectRegisterInfoById(id);
+        Userinfo userinfo = userinfoService.selectUserinfoById(registerInfo.getRegisterUser());
+        String realName = userinfo.getRealname();
+        registerInfo.setRegisterUserName(realName);
+
+        List<Userinfo> userinfoList = userinfoService.findUserByGroupIdAunitid(userinfo.getUnitid().intValue(), userinfo.getResearchGroupId().intValue());
+        List list = new ArrayList();
+        list.add(registerInfo);
+        list.add(userinfoList);
+        return list;
     }
 
     @Override
@@ -73,7 +86,12 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
     @Override
     public List<RegisterInfo> selectRegisterInfoList(RegisterInfo registerInfo)
     {
-        return registerInfoMapper.selectRegisterInfoList(registerInfo);
+        List<RegisterInfo> registerInfos = registerInfoMapper.selectRegisterInfoList(registerInfo);
+        for (RegisterInfo registerInfoTem : registerInfos){
+            String realName = userinfoService.selectUserinfoById(registerInfoTem.getRegisterUser()).getRealname();
+            registerInfoTem.setRegisterUserName(realName);
+        }
+        return registerInfos;
     }
 
     /**

@@ -1,9 +1,9 @@
 package com.ruoyi.system.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.ruoyi.system.domain.RegisterInfo;
 import com.ruoyi.system.domain.Userinfo;
+
+import java.util.List;
 
 /**
  * 登记信息Service接口
@@ -19,7 +19,7 @@ public interface IRegisterInfoService
      * @param id 登记信息ID
      * @return 登记信息
      */
-    public RegisterInfo selectRegisterInfoById(Long id);
+    public List selectRegisterInfoById(Long id);
 
     /**
      * 查询登记信息列表

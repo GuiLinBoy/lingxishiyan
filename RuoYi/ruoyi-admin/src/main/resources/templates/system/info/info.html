@@ -2,6 +2,9 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <th:block th:include="include :: header('登记信息列表')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -23,32 +26,34 @@
                                 <input type="text" name="dealer"/>
                             </li>
                             <li>
-                                <label>货号：</label>
-                                <input type="text" name="goodsid"/>
+                                <label>存量情况：</label>
+                                <select class="form-control" id="stockstate" name="stockstate"  required>
+                                    <option value="" >请选择存量情况</option>
+                                    <option value="0" >充足</option>
+                                    <option value="1" >尚可</option>
+                                    <option value="2" >不足</option>
+                                </select>
                             </li>
+
                             <li>
-                                <label>存量情况；0充足，1尚可，2不足：</label>
-                                <input type="text" name="stockstate"/>
-                            </li>
-                            <li>
-                                <label>实验用途：</label>
-                                <input type="text" name="experimentuse"/>
-                            </li>
-                            <li>
-                                <label>保管人：</label>
-                                <input type="text" name="preserver"/>
+                                <label>登记类型：</label>
+                                <select class="form-control" id="preserver" name="preserver"  required>
+                                    <option value="" >请选择登记类型</option>
+                                    <option value="0" >化学试剂登记</option>
+                                    <option value="1" >抗体信息登记</option>
+                                    <option value="2" >细胞信息登记</option>
+                                    <option value="3" >试剂盒登记</option>
+                                    <option value="4" >实验动物登记</option>
+                                    <option value="5" >其他信息登记</option>
+                                </select>
                             </li>
                             <li>
                                 <label>订购时间：</label>
                                 <input type="text" class="time-input" placeholder="请选择订购时间" name="orderTimes"/>
                             </li>
                             <li>
-                                <label>登记人：</label>
-                                <input type="text" name="registerUser"/>
-                            </li>
-                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
                         </ul>
                     </div>
@@ -74,7 +79,10 @@
             </div>
         </div>
     </div>
-    <th:block th:include="include :: footer" />
+     <script th:src="@{/js/jquery.min.js}"></script>
+     <th:block th:include="include :: footer" />
+     <th:block th:include="include :: select2-js" />
+     <th:block th:include="include :: bootstrap-select-js" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('system:info:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:info:remove')}]];
@@ -114,7 +122,17 @@
                 },
                 {
                     field: 'stockstate',
-                    title: '存量情况；0充足，1尚可，2不足'
+                    title: '存量情况',
+                    formatter:function (value,row,index){
+                        if (value == 0) {
+                            return '充足';
+                        }else if (value === 1){
+                            return '尚可';
+                        }else {
+                            return '不足'
+                        }
+
+                    }
                 },
                 {
                     field: 'experimentuse',
@@ -122,14 +140,30 @@
                 },
                 {
                     field: 'preserver',
-                    title: '保管人'
+                    title: '登记类型',
+                    formatter:function (value,row,index){
+                        if (value === 0) {
+                            return '化学试剂登记';
+                        }else if (value === 1){
+                            return '抗体信息登记';
+                        }else if (value === 2){
+                            return '细胞信息登记';
+                        }else if (value === 3){
+                            return '试剂盒登记';
+                        }else if (value === 4){
+                            return '实验动物登记';
+                        }else {
+                            return '其他信息登记'
+                        }
+
+                    }
                 },
                 {
                     field: 'orderTimes',
                     title: '订购时间'
                 },
                 {
-                    field: 'registerUser',
+                    field: 'registerUserName',
                     title: '登记人'
                 },
                 {
@@ -145,6 +179,12 @@
             };
             $.table.init(options);
         });
+
+        function reset(){
+            $.form.reset();
+            $('#stockstate').val("").select2()
+            $('#preserver').val("").select2()
+        }
     </script>
 </body>
 </html>

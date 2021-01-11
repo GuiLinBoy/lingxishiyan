@@ -1,10 +1,11 @@
 package com.ruoyi.system.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.ruoyi.system.domain.RegisterInfo;
 import com.ruoyi.system.domain.Userinfo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 登记信息Mapper接口
@@ -12,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
  * @author ruoyi
  * @date 2021-01-09
  */
+@Mapper
 public interface RegisterInfoMapper 
 {
     /**
