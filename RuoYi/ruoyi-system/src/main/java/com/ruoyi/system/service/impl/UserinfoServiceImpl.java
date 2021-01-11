@@ -53,6 +53,11 @@ public class UserinfoServiceImpl implements IUserinfoService
     }
 
     @Override
+    public List<Userinfo> selectListLikeByRealName(String realName) {
+        return userinfoMapper.selectListLikeByRealName(realName);
+    }
+
+    @Override
     public List<Userinfo> selectUserinfoList(Userinfo userinfo)
     {
         return userinfoMapper.selectUserinfoList(userinfo);

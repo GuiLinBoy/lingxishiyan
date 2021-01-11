@@ -1,18 +1,20 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.system.domain.Notepad;
+import com.ruoyi.system.mapper.NotepadMapper;
+import com.ruoyi.system.service.INotepadService;
+import com.ruoyi.system.service.IUserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.NotepadMapper;
-import com.ruoyi.system.domain.Notepad;
-import com.ruoyi.system.service.INotepadService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.List;
 
 /**
- * j记事本Service业务层处理
+ * 记事本Service业务层处理
  * 
  * @author ruoyi
- * @date 2021-01-04
+ * @date 2021-01-11
  */
 @Service
 public class NotepadServiceImpl implements INotepadService 
@@ -20,34 +22,45 @@ public class NotepadServiceImpl implements INotepadService
     @Autowired
     private NotepadMapper notepadMapper;
 
+    @Autowired
+    private IUserinfoService userinfoService;
     /**
-     * 查询j记事本
+     * 查询记事本
      * 
-     * @param id j记事本ID
-     * @return j记事本
+     * @param id 记事本ID
+     * @return 记事本
      */
     @Override
     public Notepad selectNotepadById(Long id)
     {
-        return notepadMapper.selectNotepadById(id);
+        Notepad notepad = notepadMapper.selectNotepadById(id);
+        String realName = userinfoService.selectUserinfoById(notepad.getUserid()).getRealname();
+        notepad.setUserName(realName);
+        return notepad;
+
     }
 
     /**
-     * 查询j记事本列表
+     * 查询记事本列表
      * 
-     * @param notepad j记事本
-     * @return j记事本
+     * @param notepad 记事本
+     * @return 记事本
      */
     @Override
     public List<Notepad> selectNotepadList(Notepad notepad)
     {
-        return notepadMapper.selectNotepadList(notepad);
+        List<Notepad> notepadList = notepadMapper.selectNotepadList(notepad);
+        for (Notepad notepadTem:notepadList){
+            String realName = userinfoService.selectUserinfoById(notepadTem.getUserid()).getRealname();
+            notepadTem.setUserName(realName);
+        }
+        return notepadList;
     }
 
     /**
-     * 新增j记事本
+     * 新增记事本
      * 
-     * @param notepad j记事本
+     * @param notepad 记事本
      * @return 结果
      */
     @Override
@@ -57,9 +70,9 @@ public class NotepadServiceImpl implements INotepadService
     }
 
     /**
-     * 修改j记事本
+     * 修改记事本
      * 
-     * @param notepad j记事本
+     * @param notepad 记事本
      * @return 结果
      */
     @Override
@@ -69,7 +82,7 @@ public class NotepadServiceImpl implements INotepadService
     }
 
     /**
-     * 删除j记事本对象
+     * 删除记事本对象
      * 
      * @param ids 需要删除的数据ID
      * @return 结果
@@ -81,9 +94,9 @@ public class NotepadServiceImpl implements INotepadService
     }
 
     /**
-     * 删除j记事本信息
+     * 删除记事本信息
      * 
-     * @param id j记事本ID
+     * @param id 记事本ID
      * @return 结果
      */
     @Override

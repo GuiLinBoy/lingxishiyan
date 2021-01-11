@@ -45,6 +45,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectUserinfoVo"/>
         where openid = #{openId}
     </select>
+  <select id="selectListLikeByRealName" parameterType="String" resultMap="UserinfoResult">
+        <include refid="selectUserinfoVo"/>
+          <where>
+              <if test="realname != null and realname != ''">
+                  and realname like concat('%',#{realName},'%')
+              </if>
+          </where>
+    </select>
 
     <select id="selectUserByGroupIdAunitid" parameterType="Integer" resultMap="UserinfoResult">
         <include refid="selectUserinfoVo"/>

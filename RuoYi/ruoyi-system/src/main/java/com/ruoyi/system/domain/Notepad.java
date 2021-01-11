@@ -6,10 +6,10 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * j记事本对象 notepad
+ * 记事本对象 notepad
  * 
  * @author ruoyi
- * @date 2021-01-04
+ * @date 2021-01-11
  */
 public class Notepad extends BaseEntity
 {
@@ -22,6 +22,7 @@ public class Notepad extends BaseEntity
     @Excel(name = "用户id")
     private Long userid;
 
+    private String userName;
     /** 实验名称 */
     @Excel(name = "实验名称")
     private String experimentName;
@@ -56,7 +57,15 @@ public class Notepad extends BaseEntity
         this.userid = userid;
     }
 
-    public Long getUserid() 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Long getUserid()
     {
         return userid;
     }

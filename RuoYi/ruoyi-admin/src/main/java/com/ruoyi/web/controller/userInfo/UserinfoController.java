@@ -58,6 +58,20 @@ public class UserinfoController extends BaseController
     }
 
     /**
+     * @Author ZhangGY
+     * @Description //TODO 根据用户真实姓名模糊查询
+     * @Date 13:30 2021/1/11
+     * @Param
+     * @return
+     **/
+    @ResponseBody
+    @RequestMapping("/findListLikeByRealName")
+    public List<Userinfo> findListLikeByRealName(String realName){
+        if (realName != null){
+            return userinfoService.selectListLikeByRealName(realName);
+        }else return null;
+    }
+    /**
      * 导出人员管理列表
      */
     @RequiresPermissions("system:userinfo:export")

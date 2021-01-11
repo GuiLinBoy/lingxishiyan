@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where userid = #{userId} order by id desc
     </select>
 
-        
+
     <insert id="insertNotepad" parameterType="Notepad" useGeneratedKeys="true" keyProperty="id">
         insert into notepad
         <trim prefix="(" suffix=")" suffixOverrides=",">

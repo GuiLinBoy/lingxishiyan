@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('修改j记事本')" />
+    <th:block th:include="include :: header('修改记事本')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-notepad-edit" th:object="${notepad}">
             <input name="id" th:field="*{id}" type="hidden">
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">用户id：</label>
+                <label class="col-sm-3 control-label is-required">用户姓名：</label>
                 <div class="col-sm-8">
-                    <input name="userid" th:field="*{userid}" class="form-control" type="text" required>
+                    <select class="form-control" id='userid' name="userid"  data-live-search="true" th:selected="*{userid}" required>
+                        <option th:value="*{userid}" th:text="*{userName}"></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
@@ -45,9 +50,16 @@
             </div>
         </form>
     </div>
+    <!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
     <script th:inline="javascript">
         var prefix = ctx + "system/notepad";
+        var chinese =  /^[\u4E00-\u9FA5]+$/;
         $("#form-notepad-edit").validate({
             focusCleanup: true
         });
@@ -56,7 +68,36 @@
             if ($.validate.form()) {
                 $.operate.save(prefix + "/edit", $('#form-notepad-edit').serialize());
             }
-        }
+        };
+        $("#userid").on('select2:open', function (e) {
+            $(".select2-search__field").attr('id',"userName"); //为input增加id属性
+            $(".select2-search__field").bind("input propertychange",function(event){
+                var userName = $('#userName').val();
+                if (userName != ''&& chinese.test(userName)){
+                    console.log(userName);
+                    $.ajax({
+                        type: "post",
+                        url: ctx + "system/userinfo/findListLikeByRealName",
+                        data: {
+                            'realName':userName
+                        },
+                        success: function(res) {
+                            $("#unitid").empty();
+                            if (null != res) {
+                                var html = '';
+                                Object.keys(res).forEach(function(key){
+                                    html += '<option value="' + res[key].id + '" data-tokens="'+ res[key].realname+'">' + res[key].realname+ '</option>';
+                                });
+                                $("#userid").append(html);
+                                //必须加，刷新select
+                                $("#userid").selectpicker('refresh');
+                            }
+                        }
+
+                    });
+                }
+            })
+        });
     </script>
 </body>
 </html>

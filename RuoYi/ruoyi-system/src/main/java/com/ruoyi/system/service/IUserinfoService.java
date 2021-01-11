@@ -74,4 +74,6 @@ public interface IUserinfoService
     List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId);
 
     List<Userinfo> selectUserinfoListTo(Userinfo userinfo);
+
+    List<Userinfo> selectListLikeByRealName(String realName);
 }

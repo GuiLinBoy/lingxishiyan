@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('j记事本列表')" />
+    <th:block th:include="include :: header('记事本列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,20 +11,8 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>用户id：</label>
-                                <input type="text" name="userid"/>
-                            </li>
-                            <li>
                                 <label>实验名称：</label>
                                 <input type="text" name="experimentName"/>
-                            </li>
-                            <li>
-                                <label>所需试剂、货号、供应商：</label>
-                                <input type="text" name="description1"/>
-                            </li>
-                            <li>
-                                <label>所需仪器名称、类型、商家：</label>
-                                <input type="text" name="description2"/>
                             </li>
                             <li>
                                 <label>步骤：</label>
@@ -40,9 +28,6 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:notepad:add">
-                    <i class="fa fa-plus"></i> 添加
-                </a>
                 <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:notepad:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
@@ -67,11 +52,10 @@
         $(function() {
             var options = {
                 url: prefix + "/list",
-                createUrl: prefix + "/add",
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "j记事本",
+                modalName: "记事本",
                 columns: [{
                     checkbox: true
                 },
@@ -81,8 +65,8 @@
                     visible: false
                 },
                 {
-                    field: 'userid',
-                    title: '用户id'
+                    field: 'userName',
+                    title: '用户姓名'
                 },
                 {
                     field: 'experimentName',
@@ -95,10 +79,6 @@
                 {
                     field: 'description2',
                     title: '所需仪器名称、类型、商家'
-                },
-                {
-                    field: 'description3',
-                    title: '具体内容'
                 },
                 {
                     field: 'steps',
