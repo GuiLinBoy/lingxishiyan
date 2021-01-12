@@ -71,6 +71,13 @@ public class UserinfoServiceImpl implements IUserinfoService
     @Override
     public List<Userinfo> selectUserinfoListTo(Userinfo userinfo)
     {
+        if (userinfo.getResearchGroupId()!= null && userinfo.getUnitid() == null ){
+            Long unitsId = unitsService.findUnitsLike(userinfo.getUnit()).get(0).getId();
+            userinfo.setUnitid(unitsId);
+            userinfo.setResearchGroupId(null);
+        }else {
+            userinfo.setUnitid(null);
+        }
         List<Userinfo> userinfoList = userinfoMapper.selectUserinfoList(userinfo);
 
         for (Userinfo info:userinfoList){
