@@ -26,12 +26,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectResearchGroupsVo"/>
         where id = #{id}
     </select>
+    <select id="selectResearchGroupsListMy"  resultMap="ResearchGroupsResult">
+        SELECT units.unitname as unitName, units.id as unitid ,research_groups.id ,research_groups.research_group FROM units , research_groups
+         <where>
+             units.id = research_groups.unitid
+             <if test="researchGroup != null  and researchGroup != ''">
+                 and research_group like concat('%',#{researchGroup},'%')
+             </if>
+             <if test="unitName != null  and unitName != ''">
+                 and unitName like concat('%',#{unitName},'%')
+             </if>
+         </where>
+    </select>
+
+    <select id="selectMaxId" resultType="Long" >
+        SELECT MAX(id) as id FROM research_groups
+    </select>
 
     <select id="selectResearchGroupsByName" parameterType="String" resultMap="ResearchGroupsResult">
         <include refid="selectResearchGroupsVo"/>
         where research_group = #{researchGroupName}
     </select>
-        
+
+    <select id="checkGroupNameUnique" resultMap="ResearchGroupsResult">
+        <include refid="selectResearchGroupsVo"/>
+        where research_group=#{researchGroup} and unitid = #{unitid} limit 1
+    </select>
+
     <insert id="insertResearchGroups" parameterType="ResearchGroups" useGeneratedKeys="true" keyProperty="id">
         insert into research_groups
         <trim prefix="(" suffix=")" suffixOverrides=",">

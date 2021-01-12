@@ -26,7 +26,18 @@ public class ResearchGroups extends BaseEntity
     @Excel(name = "单位的id")
     private Long unitid;
 
-    public void setId(Long id) 
+    private String unitName;
+
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

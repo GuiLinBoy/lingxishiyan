@@ -1,7 +1,8 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.ResearchGroups;
+
+import java.util.List;
 
 /**
  * 研究组管理Service接口
@@ -64,4 +65,10 @@ public interface IResearchGroupsService
     public ResearchGroups findByName(String researchGroupName);
 
     ResearchGroups findById(Integer groupId);
+
+    List<ResearchGroups> selectResearchGroupsListMy(String researchGroup, String unitName);
+
+    Long selectMaxId();
+
+    String checkGroupNameUnique(ResearchGroups groups);
 }

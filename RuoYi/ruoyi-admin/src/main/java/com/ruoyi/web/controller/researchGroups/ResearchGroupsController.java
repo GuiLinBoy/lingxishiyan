@@ -65,6 +65,17 @@ public class ResearchGroupsController extends BaseController
         return util.exportExcel(list, "groups");
     }
 
+
+    /**
+     * 校验单位名称
+     */
+    @PostMapping("/checkGroupNameUnique")
+    @ResponseBody
+    public String checkGroupNameUnique(ResearchGroups groups)
+    {
+        return researchGroupsService.checkGroupNameUnique(groups);
+    }
+
     /**
      * 新增研究组管理
      */
@@ -78,13 +89,13 @@ public class ResearchGroupsController extends BaseController
      * 新增保存研究组管理
      */
     @RequiresPermissions("system:groups:add")
-    @Log(title = "研究组管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(ResearchGroups researchGroups)
     {
         return toAjax(researchGroupsService.insertResearchGroups(researchGroups));
     }
+
 
     /**
      * 修改研究组管理
@@ -114,10 +125,8 @@ public class ResearchGroupsController extends BaseController
      */
     @RequiresPermissions("system:groups:remove")
     @Log(title = "研究组管理", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
+    @GetMapping( "/remove/{deptId}")
     @ResponseBody
-    public AjaxResult remove(String ids)
-    {
-        return toAjax(researchGroupsService.deleteResearchGroupsByIds(ids));
-    }
+    public AjaxResult remove(@PathVariable("deptId") Long deptId) {return toAjax(  researchGroupsService.deleteResearchGroupsByIds(deptId.toString()));}
+
 }

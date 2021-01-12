@@ -1,7 +1,9 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
 import com.ruoyi.system.domain.ResearchGroups;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 课题组管理Mapper接口
@@ -60,4 +62,10 @@ public interface ResearchGroupsMapper
     public int deleteResearchGroupsByIds(String[] ids);
 
     ResearchGroups selectResearchGroupsByName(String researchGroupName);
+
+    List<ResearchGroups> selectResearchGroupsListMy(@Param("researchGroup") String researchGroup,@Param("unitName") String unitName);
+
+    Long selectMaxId();
+
+    ResearchGroups checkGroupNameUnique(@Param("researchGroup") String researchGroup,@Param("unitid") Long unitid);
 }

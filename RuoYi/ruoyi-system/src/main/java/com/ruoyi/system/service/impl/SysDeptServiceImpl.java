@@ -1,12 +1,5 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
@@ -14,8 +7,20 @@ import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.ResearchGroups;
+import com.ruoyi.system.domain.Units;
 import com.ruoyi.system.mapper.SysDeptMapper;
+import com.ruoyi.system.service.IResearchGroupsService;
 import com.ruoyi.system.service.ISysDeptService;
+import com.ruoyi.system.service.IUnitsService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 部门管理 服务实现
@@ -28,6 +33,13 @@ public class SysDeptServiceImpl implements ISysDeptService
     @Autowired
     private SysDeptMapper deptMapper;
 
+    @Autowired
+    private IUnitsService unitsService;
+
+    @Autowired
+    private IResearchGroupsService groupsService;
+
+
     /**
      * 查询部门管理数据
      * 
@@ -38,7 +50,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     @DataScope(deptAlias = "d")
     public List<SysDept> selectDeptList(SysDept dept)
     {
-        return deptMapper.selectDeptList(dept);
+        return this.initDeptListTo(dept.getDeptName(),dept.getParentName());
     }
 
     /**
@@ -51,15 +63,85 @@ public class SysDeptServiceImpl implements ISysDeptService
     @DataScope(deptAlias = "d")
     public List<Ztree> selectDeptTree(SysDept dept)
     {
-        List<SysDept> deptList = deptMapper.selectDeptList(dept);
+        List<SysDept> deptList = this.initDeptListTo(dept.getDeptName(),dept.getParentName());
         List<Ztree> ztrees = initZtree(deptList);
         return ztrees;
+    }
+    /*
+     * @Author ZhangGY
+     * @Description //TODO 初始化职位列表
+     * @Date 23:56 2021/1/11
+     * @Param []
+     * @return java.util.List<com.ruoyi.common.core.domain.entity.SysDept>
+     **/
+    private List<SysDept> initDeptListTo(String researchGroup, String unitName){
+        List<SysDept> deptList = new ArrayList<SysDept>();
+        SysDept sysDept;//课题组对象
+        SysDept sysDeptPar;//单位对象
+        List<ResearchGroups> researchGroups = groupsService.selectResearchGroupsListMy(researchGroup,unitName);
+        Long maxId = groupsService.selectMaxId();
+        for (ResearchGroups researchGroupsTem : researchGroups){
+            sysDept = new SysDept();
+            sysDeptPar = new SysDept();
+            Long deptId = researchGroupsTem.getId();
+
+            Long parentId = deptId+maxId;
+            //建立单位对象
+            sysDeptPar.setDeptName(researchGroupsTem.getUnitName());
+            sysDeptPar.setParentId(0L);
+            sysDeptPar.setDelFlag("0");
+            sysDeptPar.setStatus("0");
+
+            if (!deptList.contains(sysDeptPar)){//如果单位集合中不存在，则设置单位ID并加入集合
+                sysDeptPar.setDeptId(parentId);
+                deptList.add(sysDeptPar);
+            }else {                             // 若存在，则获取对象的id，指定课题组的父节点id
+                parentId = deptList.get(deptList.indexOf(sysDeptPar)).getDeptId();
+            }
+            //建立课题组对象
+            sysDept.setParentName(researchGroupsTem.getUnitName());
+            sysDept.setDeptName(researchGroupsTem.getResearchGroup());
+            sysDept.setDeptId(deptId);
+            sysDept.setParentId(parentId);
+            sysDept.setDelFlag("0");
+            sysDept.setStatus("0");
+            deptList.add(sysDept);
+        }
+        return deptList;
+    }
+    private List<SysDept> initDeptList(){
+        List<SysDept> deptList = new ArrayList<SysDept>();
+        List<ResearchGroups> researchGroups = groupsService.selectResearchGroupsList(new ResearchGroups());
+        for (ResearchGroups researchGroupsTem : researchGroups){
+            SysDept sysDept = new SysDept();
+            SysDept sysDeptPar = new SysDept();
+
+            Units units = unitsService.selectUnitsById(researchGroupsTem.getUnitid());
+
+            sysDept.setParentName(units.getUnitname());
+            sysDept.setDeptName(researchGroupsTem.getResearchGroup());
+            sysDept.setDeptId(researchGroupsTem.getId());
+            sysDept.setParentId(researchGroupsTem.getUnitid());
+            sysDept.setDelFlag("0");
+            sysDept.setStatus("0");
+            deptList.add(sysDept);
+
+            sysDeptPar.setDeptName(units.getUnitname());
+            sysDeptPar.setDeptId(units.getId());
+            sysDeptPar.setParentId(0L);
+            sysDeptPar.setDelFlag("0");
+            sysDeptPar.setStatus("0");
+            if (!deptList.contains(sysDeptPar)){
+                deptList.add(sysDeptPar);
+            }
+        }
+        return deptList;
     }
 
     /**
      * 查询部门管理树（排除下级）
      * 
-     * @param deptId 部门ID
+     * @param
      * @return 所有部门信息
      */
     @Override

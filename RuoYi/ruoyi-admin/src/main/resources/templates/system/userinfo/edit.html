@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">工作单位：</label>
                 <div class="col-sm-8">
-                    <select class="form-control" id='unitid' name="unitid"  data-live-search="true" th:selected="*{unitid}" required>
+                    <select class="form-control" id='unitid' name="unitid"  data-live-search="true" th:field="*{unitid}" required>
                         <option th:value="*{unitid}" th:text="*{unit}"></option>
                     </select>
                 </div>

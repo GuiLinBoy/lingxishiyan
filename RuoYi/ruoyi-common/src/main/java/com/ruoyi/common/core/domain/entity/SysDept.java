@@ -1,9 +1,11 @@
 package com.ruoyi.common.core.domain.entity;
 
-import javax.validation.constraints.*;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
  * 部门表 sys_dept
@@ -164,22 +166,28 @@ public class SysDept extends BaseEntity
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysDept sysDept = (SysDept) o;
+        return  Objects.equals(parentId, sysDept.parentId) && Objects.equals(deptName, sysDept.deptName) && Objects.equals(parentName, sysDept.parentName);
+    }
+
+
+    @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("deptId", getDeptId())
-            .append("parentId", getParentId())
-            .append("ancestors", getAncestors())
-            .append("deptName", getDeptName())
-            .append("orderNum", getOrderNum())
-            .append("leader", getLeader())
-            .append("phone", getPhone())
-            .append("email", getEmail())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+        return "SysDept{" +
+                "deptId=" + deptId +
+                ", parentId=" + parentId +
+                ", ancestors='" + ancestors + '\'' +
+                ", deptName='" + deptName + '\'' +
+                ", orderNum='" + orderNum + '\'' +
+                ", leader='" + leader + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", parentName='" + parentName + '\'' +
+                '}';
     }
 }

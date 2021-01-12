@@ -1,12 +1,16 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.ResearchGroups;
+import com.ruoyi.system.mapper.ResearchGroupsMapper;
+import com.ruoyi.system.service.IResearchGroupsService;
+import com.ruoyi.system.service.IUnitsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.ResearchGroupsMapper;
-import com.ruoyi.system.domain.ResearchGroups;
-import com.ruoyi.system.service.IResearchGroupsService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.List;
 
 /**
  * 课题组管理Service业务层处理
@@ -20,6 +24,8 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
     @Autowired
     private ResearchGroupsMapper researchGroupsMapper;
 
+    @Autowired
+    private IUnitsService unitsService;
     /**
      * 查询课题组管理
      * 
@@ -29,7 +35,10 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
     @Override
     public ResearchGroups selectResearchGroupsById(Long id)
     {
-        return researchGroupsMapper.selectResearchGroupsById(id);
+        ResearchGroups groups = researchGroupsMapper.selectResearchGroupsById(id);
+        String unitname = unitsService.selectUnitsById(groups.getUnitid()).getUnitname();
+        groups.setUnitName(unitname);
+        return groups;
     }
 
     /**
@@ -69,6 +78,36 @@ public class ResearchGroupsServiceImpl implements IResearchGroupsService
         if (groupId != null) {
             return this.selectResearchGroupsById(groupId.longValue());
         }else return null;
+    }
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 查询所有课题组（添加单位名称）
+     * @Date 21:15 2021/1/11
+     * @Param
+     * @return
+     **/
+    @Override
+    public List<ResearchGroups> selectResearchGroupsListMy(String researchGroup, String unitName) {
+        return researchGroupsMapper.selectResearchGroupsListMy(researchGroup,unitName);
+    }
+
+    @Override
+    public Long selectMaxId() {
+        return researchGroupsMapper.selectMaxId();
+    }
+
+    @Override
+    public String checkGroupNameUnique(ResearchGroups groups) {
+
+        Long deptId = StringUtils.isNull(groups.getUnitid()) ? -1L : groups.getUnitid();
+        ResearchGroups info = researchGroupsMapper.checkGroupNameUnique(groups.getResearchGroup(), groups.getUnitid());
+        if (StringUtils.isNotNull(info))
+        {
+            return UserConstants.DEPT_NAME_NOT_UNIQUE;
+        }
+        return UserConstants.DEPT_NAME_UNIQUE;
+
     }
 
     /**
