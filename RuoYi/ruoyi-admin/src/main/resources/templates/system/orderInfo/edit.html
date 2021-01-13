@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改orderInfo')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-orderInfo-edit" th:object="${orderInfo}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">0代表个人使用试剂申购；1代表公用试剂、耗材短缺上报及订购：</label>
+                <div class="col-sm-8">
+                    <select name="orderType" class="form-control m-b">
+                        <option value="">所有</option>
+                    </select>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">订购名称：</label>
+                <div class="col-sm-8">
+                    <input name="orderName" th:field="*{orderName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">制造商：</label>
+                <div class="col-sm-8">
+                    <input name="manufacturer" th:field="*{manufacturer}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">供货商：</label>
+                <div class="col-sm-8">
+                    <input name="dealer" th:field="*{dealer}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">货号：</label>
+                <div class="col-sm-8">
+                    <input name="goodsid" th:field="*{goodsid}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">存量情况；0充足，1尚可，2不足：</label>
+                <div class="col-sm-8">
+                    <input name="stockstate" th:field="*{stockstate}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">实验用途：</label>
+                <div class="col-sm-8">
+                    <input name="experimentuse" th:field="*{experimentuse}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">订购人：</label>
+                <div class="col-sm-8">
+                    <input name="orderUser" th:field="*{orderUser}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">订购时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="orderTime" th:value="${#dates.format(orderInfo.orderTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">报价：</label>
+                <div class="col-sm-8">
+                    <input name="offerPrice" th:field="*{offerPrice}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">审核状态；0是待审核；1是审核成功；2是审核失败：</label>
+                <div class="col-sm-8">
+                    <input name="checkstate" th:field="*{checkstate}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">审核人id：</label>
+                <div class="col-sm-8">
+                    <input name="checkUser" th:field="*{checkUser}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">0是不加三方1是加上三方：</label>
+                <div class="col-sm-8">
+                    <input name="sanfang" th:field="*{sanfang}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/orderInfo";
+        $("#form-orderInfo-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-orderInfo-edit').serialize());
+            }
+        }
+
+        $("input[name='orderTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

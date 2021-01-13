@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OrderInfoMapper">
+    
+    <resultMap type="OrderInfo" id="OrderInfoResult">
+        <result property="id"    column="id"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="orderName"    column="order_name"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="dealer"    column="dealer"    />
+        <result property="goodsid"    column="goodsid"    />
+        <result property="stockstate"    column="stockstate"    />
+        <result property="experimentuse"    column="experimentuse"    />
+        <result property="orderUser"    column="order_user"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="offerPrice"    column="offer_price"    />
+        <result property="checkstate"    column="checkstate"    />
+        <result property="checkUser"    column="check_user"    />
+        <result property="sanfang"    column="sanfang"    />
+    </resultMap>
+
+    <sql id="selectOrderInfoVo">
+        select id, order_type, order_name, manufacturer, dealer, goodsid, stockstate, experimentuse, order_user, order_time, offer_price, checkstate, check_user, sanfang from order_info
+    </sql>
+
+    <select id="selectOrderInfoList" parameterType="OrderInfo" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        <where>  
+            <if test="orderType != null "> and order_type = #{orderType}</if>
+            <if test="orderName != null "> and order_name like concat('%', #{orderName}, '%')</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
+            <if test="dealer != null  and dealer != ''"> and dealer = #{dealer}</if>
+            <if test="goodsid != null  and goodsid != ''"> and goodsid = #{goodsid}</if>
+            <if test="stockstate != null "> and stockstate = #{stockstate}</if>
+            <if test="experimentuse != null  and experimentuse != ''"> and experimentuse = #{experimentuse}</if>
+            <if test="orderUser != null "> and order_user = #{orderUser}</if>
+            <if test="orderTime != null "> and order_time = #{orderTime}</if>
+            <if test="offerPrice != null "> and offer_price = #{offerPrice}</if>
+            <if test="checkstate != null "> and checkstate = #{checkstate}</if>
+            <if test="checkUser != null "> and check_user = #{checkUser}</if>
+            <if test="sanfang != null "> and sanfang = #{sanfang}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderInfoById" parameterType="Long" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectOrderInfoByCheckUserId" parameterType="Integer" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        where check_user = #{checkUserId}
+    </select>
+    <select id="selectOrderInfoByOrderUserId" parameterType="Integer" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        where order_user = #{OrderUserId}
+    </select>
+        
+    <insert id="insertOrderInfo" parameterType="OrderInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into order_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderType != null">order_type,</if>
+            <if test="orderName != null">order_name,</if>
+            <if test="manufacturer != null">manufacturer,</if>
+            <if test="dealer != null">dealer,</if>
+            <if test="goodsid != null">goodsid,</if>
+            <if test="stockstate != null">stockstate,</if>
+            <if test="experimentuse != null">experimentuse,</if>
+            <if test="orderUser != null">order_user,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="offerPrice != null">offer_price,</if>
+            <if test="checkstate != null">checkstate,</if>
+            <if test="checkUser != null">check_user,</if>
+            <if test="sanfang != null">sanfang,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderType != null">#{orderType},</if>
+            <if test="orderName != null">#{orderName},</if>
+            <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="dealer != null">#{dealer},</if>
+            <if test="goodsid != null">#{goodsid},</if>
+            <if test="stockstate != null">#{stockstate},</if>
+            <if test="experimentuse != null">#{experimentuse},</if>
+            <if test="orderUser != null">#{orderUser},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="offerPrice != null">#{offerPrice},</if>
+            <if test="checkstate != null">#{checkstate},</if>
+            <if test="checkUser != null">#{checkUser},</if>
+            <if test="sanfang != null">#{sanfang},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderInfo" parameterType="OrderInfo">
+        update order_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="orderName != null">order_name = #{orderName},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="dealer != null">dealer = #{dealer},</if>
+            <if test="goodsid != null">goodsid = #{goodsid},</if>
+            <if test="stockstate != null">stockstate = #{stockstate},</if>
+            <if test="experimentuse != null">experimentuse = #{experimentuse},</if>
+            <if test="orderUser != null">order_user = #{orderUser},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="offerPrice != null">offer_price = #{offerPrice},</if>
+            <if test="checkstate != null">checkstate = #{checkstate},</if>
+            <if test="checkUser != null">check_user = #{checkUser},</if>
+            <if test="sanfang != null">sanfang = #{sanfang},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderInfoById" parameterType="Long">
+        delete from order_info where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderInfoByIds" parameterType="String">
+        delete from order_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
