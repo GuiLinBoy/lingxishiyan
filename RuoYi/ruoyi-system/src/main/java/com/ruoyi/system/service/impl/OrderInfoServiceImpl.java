@@ -27,6 +27,7 @@ public class OrderInfoServiceImpl implements IOrderInfoService
     @Autowired
     private ISanfangInfoService sanFangInfoService;
 
+
     /**
      * 查询orderInfo
      * 
@@ -40,17 +41,29 @@ public class OrderInfoServiceImpl implements IOrderInfoService
     }
 
     @Override
-    public OrderInfo selectOrderInfoByCheckUserId(Integer checkUserId) {
+    public OrderAndSanFang selectOrderInfoByCheckUserId(Integer checkUserId) {
         if (checkUserId != null) {
-            return orderInfoMapper.selectOrderInfoByCheckUserId(checkUserId);
+            OrderInfo orderInfo = orderInfoMapper.selectOrderInfoByCheckUserId(checkUserId);
+            OrderAndSanFang orderAndSanFang = new OrderAndSanFang();
+            orderAndSanFang.setOrderInfo(orderInfo);
+            if (orderInfo.getSanfang() == 1) {
+                orderAndSanFang.setSanFangInfoList(sanFangInfoService.selectSanfangInfoByOrderId(orderInfo.getId()));
+            }
+            return orderAndSanFang;
         }else return null;
     }
 
     @Override
-    public OrderInfo selectOrderInfoByOrderUserId(Integer OrderUserId) {
+    public OrderAndSanFang selectOrderInfoByOrderUserId(Integer OrderUserId) {
 
         if (OrderUserId != null) {
-            return orderInfoMapper.selectOrderInfoByOrderUserId(OrderUserId);
+            OrderInfo orderInfo = orderInfoMapper.selectOrderInfoByCheckUserId(OrderUserId);
+            OrderAndSanFang orderAndSanFang = new OrderAndSanFang();
+            orderAndSanFang.setOrderInfo(orderInfo);
+            if (orderInfo.getSanfang() == 1) {
+                orderAndSanFang.setSanFangInfoList(sanFangInfoService.selectSanfangInfoByOrderId(orderInfo.getId()));
+            }
+            return orderAndSanFang;
         }else return null;
     }
 

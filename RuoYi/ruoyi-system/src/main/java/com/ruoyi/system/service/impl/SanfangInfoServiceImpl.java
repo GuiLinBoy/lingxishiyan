@@ -1,12 +1,13 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.system.domain.SanfangInfo;
+import com.ruoyi.system.mapper.SanfangInfoMapper;
+import com.ruoyi.system.service.ISanfangInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.SanfangInfoMapper;
-import com.ruoyi.system.domain.SanfangInfo;
-import com.ruoyi.system.service.ISanfangInfoService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.List;
 
 /**
  * sanFangInfoService业务层处理
@@ -42,6 +43,11 @@ public class SanfangInfoServiceImpl implements ISanfangInfoService
     public List<SanfangInfo> selectSanfangInfoList(SanfangInfo sanfangInfo)
     {
         return sanfangInfoMapper.selectSanfangInfoList(sanfangInfo);
+    }
+
+    @Override
+    public List<SanfangInfo> selectSanfangInfoByOrderId(Long orderId) {
+        return sanfangInfoMapper.selectSanfangInfoByOrderId(orderId);
     }
 
     /**

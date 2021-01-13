@@ -1,7 +1,8 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
 import com.ruoyi.system.domain.SanfangInfo;
+
+import java.util.List;
 
 /**
  * sanFangInfoMapper接口
@@ -58,4 +59,6 @@ public interface SanfangInfoMapper
      * @return 结果
      */
     public int deleteSanfangInfoByIds(String[] ids);
+
+    List<SanfangInfo> selectSanfangInfoByOrderId(Long orderId);
 }

@@ -1,7 +1,8 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.SanfangInfo;
+
+import java.util.List;
 
 /**
  * sanFangInfoService接口
@@ -58,4 +59,6 @@ public interface ISanfangInfoService
      * @return 结果
      */
     public int deleteSanfangInfoById(Integer id);
+
+    List<SanfangInfo> selectSanfangInfoByOrderId(Long orderId);
 }

@@ -1,7 +1,6 @@
 package com.ruoyi.web.controller.weChat;
 
 import com.ruoyi.system.domain.OrderAndSanFang;
-import com.ruoyi.system.domain.OrderInfo;
 import com.ruoyi.system.service.IOrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,13 +23,13 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping("/findOrderByCheckUser")
-    public OrderInfo findOrderByCheckUser(Integer checkUserId){
+    public  OrderAndSanFang findOrderByCheckUser(Integer checkUserId){
         return orderService.selectOrderInfoByCheckUserId(checkUserId);
     }
 
     @ResponseBody
     @RequestMapping("/selectOrderInfoByOrderUser")
-    public OrderInfo selectOrderInfoByOrderUser(Integer OrderUserId){
+    public OrderAndSanFang selectOrderInfoByOrderUser(Integer OrderUserId){
         return orderService.selectOrderInfoByOrderUserId(OrderUserId);
     }
 

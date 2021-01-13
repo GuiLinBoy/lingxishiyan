@@ -61,10 +61,10 @@ public interface IOrderInfoService
      */
     public int deleteOrderInfoById(Long id);
 
-    OrderInfo selectOrderInfoByCheckUserId(Integer checkUserId);
+    OrderAndSanFang selectOrderInfoByCheckUserId(Integer checkUserId);
 
 
-    OrderInfo selectOrderInfoByOrderUserId(Integer OrderUserId);
+    OrderAndSanFang selectOrderInfoByOrderUserId(Integer OrderUserId);
 
     int saveAndUpdateOrder(OrderAndSanFang orderAndSanFang);
 }
