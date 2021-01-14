@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TimesMapper">
+    
+    <resultMap type="Times" id="TimesResult">
+        <result property="id"    column="id"    />
+        <result property="timeLenght"    column="time_lenght"    />
+        <result property="userid"    column="userid"    />
+    </resultMap>
+
+    <sql id="selectTimesVo">
+        select id, time_lenght, userid from times
+    </sql>
+
+    <select id="selectTimesList" parameterType="Times" resultMap="TimesResult">
+        <include refid="selectTimesVo"/>
+        <where>  
+            <if test="timeLenght != null "> and time_lenght = #{timeLenght}</if>
+            <if test="userid != null "> and userid = #{userid}</if>
+        </where>
+    </select>
+    
+    <select id="selectTimesById" parameterType="Long" resultMap="TimesResult">
+        <include refid="selectTimesVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectTimesByUserId" parameterType="Integer" resultMap="TimesResult">
+        <include refid="selectTimesVo"/>
+        where userid = #{userId}
+    </select>
+        
+    <insert id="insertTimes" parameterType="Times" useGeneratedKeys="true" keyProperty="id">
+        insert into times
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="timeLenght != null">time_lenght,</if>
+            <if test="userid != null">userid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="timeLenght != null">#{timeLenght},</if>
+            <if test="userid != null">#{userid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTimes" parameterType="Times">
+        update times
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="timeLenght != null">time_lenght = #{timeLenght},</if>
+            <if test="userid != null">userid = #{userid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTimesById" parameterType="Long">
+        delete from times where id = #{id}
+    </delete>
+
+    <delete id="deleteTimesByIds" parameterType="String">
+        delete from times where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
