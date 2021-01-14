@@ -43,12 +43,9 @@ public class OrderInfoServiceImpl implements IOrderInfoService
     @Override
     public OrderAndSanFang selectOrderInfoByCheckUserId(Integer checkUserId) {
         if (checkUserId != null) {
-            OrderInfo orderInfo = orderInfoMapper.selectOrderInfoByCheckUserId(checkUserId);
+            List<OrderInfo> orderInfoList = orderInfoMapper.selectOrderInfoByCheckUserId(checkUserId);
             OrderAndSanFang orderAndSanFang = new OrderAndSanFang();
-            orderAndSanFang.setOrderInfo(orderInfo);
-            if (orderInfo.getSanfang() == 1) {
-                orderAndSanFang.setSanFangInfoList(sanFangInfoService.selectSanfangInfoByOrderId(orderInfo.getId()));
-            }
+            orderAndSanFang.setOrderInfoList(orderInfoList);
             return orderAndSanFang;
         }else return null;
     }
@@ -57,12 +54,9 @@ public class OrderInfoServiceImpl implements IOrderInfoService
     public OrderAndSanFang selectOrderInfoByOrderUserId(Integer OrderUserId) {
 
         if (OrderUserId != null) {
-            OrderInfo orderInfo = orderInfoMapper.selectOrderInfoByCheckUserId(OrderUserId);
+            List<OrderInfo> orderInfoList = orderInfoMapper.selectOrderInfoByOrderUserId(OrderUserId);
             OrderAndSanFang orderAndSanFang = new OrderAndSanFang();
-            orderAndSanFang.setOrderInfo(orderInfo);
-            if (orderInfo.getSanfang() == 1) {
-                orderAndSanFang.setSanFangInfoList(sanFangInfoService.selectSanfangInfoByOrderId(orderInfo.getId()));
-            }
+            orderAndSanFang.setOrderInfoList(orderInfoList);
             return orderAndSanFang;
         }else return null;
     }

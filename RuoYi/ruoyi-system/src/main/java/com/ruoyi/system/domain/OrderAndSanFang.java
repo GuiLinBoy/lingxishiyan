@@ -11,8 +11,15 @@ public class OrderAndSanFang {
 
     private OrderInfo         orderInfo;
     private List<SanfangInfo> sanFangInfoList;
+    private List<OrderInfo> orderInfoList;
 
+    public List<OrderInfo> getOrderInfoList() {
+        return orderInfoList;
+    }
 
+    public void setOrderInfoList(List<OrderInfo> orderInfoList) {
+        this.orderInfoList = orderInfoList;
+    }
 
     public OrderInfo getOrderInfo() {
         return orderInfo;

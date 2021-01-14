@@ -1,12 +1,17 @@
 package com.ruoyi.web.controller.weChat;
 
 import com.ruoyi.system.domain.OrderAndSanFang;
+import com.ruoyi.system.domain.SanfangInfo;
 import com.ruoyi.system.service.IOrderInfoService;
+import com.ruoyi.system.service.ISanfangInfoService;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Classname OrderController
@@ -21,10 +26,14 @@ public class OrderController {
     private IOrderInfoService orderService;
 
 
+    @Autowired
+    private ISanfangInfoService sanfangInfoService;
+
+
     @ResponseBody
     @RequestMapping("/findOrderByCheckUser")
     public  OrderAndSanFang findOrderByCheckUser(Integer checkUserId){
-        return orderService.selectOrderInfoByCheckUserId(checkUserId);
+         return orderService.selectOrderInfoByCheckUserId(checkUserId);
     }
 
     @ResponseBody
@@ -46,5 +55,14 @@ public class OrderController {
         if (orderAndSanFang != null) {
             return orderService.saveAndUpdateOrder(orderAndSanFang);
         }else return -1;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/findSanFangByOrderId")
+    public List<SanfangInfo> findSanFangByOrderId(Integer OrderId){
+        if (OrderId != null) {
+            return sanfangInfoService.selectSanfangInfoByOrderId(OrderId.longValue());
+        }else return null;
     }
 }

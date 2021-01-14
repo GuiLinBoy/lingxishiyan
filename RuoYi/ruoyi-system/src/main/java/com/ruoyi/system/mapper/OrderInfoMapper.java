@@ -60,7 +60,7 @@ public interface OrderInfoMapper
      */
     public int deleteOrderInfoByIds(String[] ids);
 
-    OrderInfo selectOrderInfoByCheckUserId(Integer checkUserId);
+    List<OrderInfo> selectOrderInfoByCheckUserId(Integer checkUserId);
 
-    OrderInfo selectOrderInfoByOrderUserId(Integer OrderUserId);
+    List<OrderInfo> selectOrderInfoByOrderUserId(Integer OrderUserId);
 }
