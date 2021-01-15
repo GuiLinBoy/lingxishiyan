@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('修改orderInfo')" />
+    <th:block th:include="include :: header('修改订单信息')" />
     <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-orderInfo-edit" th:object="${orderInfo}">
             <input name="id" th:field="*{id}" type="hidden">
             <div class="form-group">    
-                <label class="col-sm-3 control-label">0代表个人使用试剂申购；1代表公用试剂、耗材短缺上报及订购：</label>
+                <label class="col-sm-3 control-label">申购类型</label>
                 <div class="col-sm-8">
-                    <select name="orderType" class="form-control m-b">
-                        <option value="">所有</option>
+                    <select class="form-control" name="orderType" th:field="*{orderType}">
+                        <option value="">请选择申购类型</option>
+                        <option value="0">个人使用试剂申购</option>
+                        <option value="1">公用试剂、耗材短缺上报及订购</option>
                     </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
                 </div>
             </div>
             <div class="form-group">    
@@ -42,9 +45,14 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">存量情况；0充足，1尚可，2不足：</label>
+                <label class="col-sm-3 control-label">存量情况</label>
                 <div class="col-sm-8">
-                    <input name="stockstate" th:field="*{stockstate}" class="form-control" type="text">
+                    <select class="form-control" id="stockstate" name="stockstate" th:field="*{stockstate}" required>
+                        <option value="" >请选择存量情况</option>
+                        <option value="0" >充足</option>
+                        <option value="1" >尚可</option>
+                        <option value="2" >不足</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
@@ -56,14 +64,17 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label">订购人：</label>
                 <div class="col-sm-8">
-                    <input name="orderUser" th:field="*{orderUser}" class="form-control" type="text">
+                    <select class="form-control" id='orderUser' name="orderUser"  data-live-search="true" th:field="*{orderUser}" required>
+                        <option value="">请输入用户姓名查询</option>
+                        <option th:value="*{orderUser}" th:text="*{orderUserName}"></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label">订购时间：</label>
                 <div class="col-sm-8">
                     <div class="input-group date">
-                        <input name="orderTime" th:value="${#dates.format(orderInfo.orderTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <input name="orderTime" id="laydate-demo-3" th:value="${#dates.format(orderInfo.orderTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -74,30 +85,45 @@
                     <input name="offerPrice" th:field="*{offerPrice}" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">审核状态；0是待审核；1是审核成功；2是审核失败：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">审核状态</label>
                 <div class="col-sm-8">
-                    <input name="checkstate" th:field="*{checkstate}" class="form-control" type="text">
+                    <select class="form-control" id="checkstate" th:field="*{checkstate}" name="checkstate"  required>
+                        <option value="" >请选择审核状态</option>
+                        <option value="0" >待审核</option>
+                        <option value="1" >审核成功</option>
+                        <option value="2" >审核失败</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">审核人id：</label>
+                <label class="col-sm-3 control-label">审核人：</label>
                 <div class="col-sm-8">
-                    <input name="checkUser" th:field="*{checkUser}" class="form-control" type="text">
+                    <select class="form-control" id='checkUser' name="checkUser"  data-live-search="true" th:field="*{checkUser}" required>
+                        <option th:value="*{checkUser}" th:text="*{checkUserName}"></option>
+                    </select>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">0是不加三方1是加上三方：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否含三方：</label>
                 <div class="col-sm-8">
-                    <input name="sanfang" th:field="*{sanfang}" class="form-control" type="text">
+                    <select class="form-control" id="sanfang" th:field="*{sanfang}"  name="sanfang"  required>
+                        <option value="" >请选择是否含三方</option>
+                        <option value="0" >不含三方</option>
+                        <option value="1" >含三方</option>
+                    </select>
                 </div>
             </div>
         </form>
     </div>
+    <script th:src="@{/js/jquery.min.js}"></script>
     <th:block th:include="include :: footer" />
-    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
     <script th:inline="javascript">
         var prefix = ctx + "system/orderInfo";
+
+        var chinese =  /^[\u4E00-\u9FA5]+$/;
         $("#form-orderInfo-edit").validate({
             focusCleanup: true
         });
@@ -107,12 +133,50 @@
                 $.operate.save(prefix + "/edit", $('#form-orderInfo-edit').serialize());
             }
         }
-
-        $("input[name='orderTime']").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: "month",
-            autoclose: true
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#laydate-demo-3',
+                type: 'datetime',
+                trigger: 'click'
+            });
         });
+
+        $("#orderUser").on('select2:open', function (e) {
+
+            findUserNameLike( $("#orderUser"));
+        });
+        $("#checkUser").on('select2:open', function (e) {
+            findUserNameLike($("#checkUser"));
+        });
+        function findUserNameLike(object){
+            $(".select2-search__field").attr('id',"userName"); //为input增加id属性
+            $(".select2-search__field").bind("input propertychange",function(event){
+                var userName = $('#userName').val();
+                if (userName != ''&& chinese.test(userName)){
+                    $.ajax({
+                        type: "post",
+                        url: ctx + "system/userinfo/findListLikeByRealName",
+                        data: {
+                            'realName':userName
+                        },
+                        success: function(res) {
+                            object.empty();
+                            if (null != res) {
+                                var html = '';
+                                Object.keys(res).forEach(function(key){
+                                    html += '<option value="' + res[key].id + '" data-tokens="'+ res[key].realname+'">' + res[key].realname+ '</option>';
+                                });
+                                object.append(html);
+                                //必须加，刷新select
+                                object.selectpicker('refresh');
+                            }
+                        }
+
+                    });
+                }
+            })
+        }
     </script>
 </body>
 </html>

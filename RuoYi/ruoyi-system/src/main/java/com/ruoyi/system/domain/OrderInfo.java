@@ -54,9 +54,11 @@ public class OrderInfo extends BaseEntity
     @Excel(name = "订购人")
     private Long orderUser;
 
+    private String orderUserName;
+
     /** 订购时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "订购时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "订购时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date orderTime;
 
     /** 报价 */
@@ -71,11 +73,29 @@ public class OrderInfo extends BaseEntity
     @Excel(name = "审核人id")
     private Long checkUser;
 
+    private String checkUserName;
+
     /** 0是不加三方1是加上三方 */
     @Excel(name = "0是不加三方1是加上三方")
     private Long sanfang;
 
-    public void setId(Long id) 
+    public String getOrderUserName() {
+        return orderUserName;
+    }
+
+    public void setOrderUserName(String orderUserName) {
+        this.orderUserName = orderUserName;
+    }
+
+    public String getCheckUserName() {
+        return checkUserName;
+    }
+
+    public void setCheckUserName(String checkUserName) {
+        this.checkUserName = checkUserName;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

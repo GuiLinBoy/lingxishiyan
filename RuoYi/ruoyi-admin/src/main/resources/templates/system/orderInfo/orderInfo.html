@@ -2,6 +2,9 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <th:block th:include="include :: header('orderInfo列表')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,10 +14,11 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>0代表个人使用试剂申购；1代表公用试剂、耗材短缺上报及订购：</label>
-                                <select name="orderType">
-                                    <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                <label>申购类型：</label>
+                                <select class="form-control" name="orderType">
+                                    <option value="">请选择申购类型</option>
+                                    <option value="0">个人使用试剂申购</option>
+                                    <option value="1">公用试剂、耗材短缺上报及订购</option>
                                 </select>
                             </li>
                             <li>
@@ -34,16 +38,17 @@
                                 <input type="text" name="goodsid"/>
                             </li>
                             <li>
-                                <label>存量情况；0充足，1尚可，2不足：</label>
-                                <input type="text" name="stockstate"/>
+                                <label>存量情况：</label>
+                                <select class="form-control" id="stockstate" name="stockstate"  required>
+                                    <option value="" >请选择存量情况</option>
+                                    <option value="0" >充足</option>
+                                    <option value="1" >尚可</option>
+                                    <option value="2" >不足</option>
+                                </select>
                             </li>
                             <li>
                                 <label>实验用途：</label>
                                 <input type="text" name="experimentuse"/>
-                            </li>
-                            <li>
-                                <label>订购人：</label>
-                                <input type="text" name="orderUser"/>
                             </li>
                             <li>
                                 <label>订购时间：</label>
@@ -54,16 +59,21 @@
                                 <input type="text" name="offerPrice"/>
                             </li>
                             <li>
-                                <label>审核状态；0是待审核；1是审核成功；2是审核失败：</label>
-                                <input type="text" name="checkstate"/>
+                                <label>审核状态</label>
+                                <select class="form-control" id="checkstate" name="checkstate"  required>
+                                    <option value="" >请选择审核状态</option>
+                                    <option value="0" >待审核</option>
+                                    <option value="1" >审核成功</option>
+                                    <option value="2" >审核失败</option>
+                                </select>
                             </li>
                             <li>
-                                <label>审核人id：</label>
-                                <input type="text" name="checkUser"/>
-                            </li>
-                            <li>
-                                <label>0是不加三方1是加上三方：</label>
-                                <input type="text" name="sanfang"/>
+                                <label>三方：</label>
+                                <select class="form-control" id="sanfang" name="sanfang"  required>
+                                    <option value="" >请选择是否含三方</option>
+                                    <option value="0" >不含三方</option>
+                                    <option value="1" >含三方</option>
+                                </select>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -75,17 +85,8 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:orderInfo:add">
-                    <i class="fa fa-plus"></i> 添加
-                </a>
                 <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:orderInfo:edit">
                     <i class="fa fa-edit"></i> 修改
-                </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:orderInfo:remove">
-                    <i class="fa fa-remove"></i> 删除
-                </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:orderInfo:export">
-                    <i class="fa fa-download"></i> 导出
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped">
@@ -93,10 +94,14 @@
             </div>
         </div>
     </div>
-    <th:block th:include="include :: footer" />
+     <script th:src="@{/js/jquery.min.js}"></script>
+     <th:block th:include="include :: footer" />
+     <th:block th:include="include :: select2-js" />
+     <th:block th:include="include :: bootstrap-select-js" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('system:orderInfo:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:orderInfo:remove')}]];
+        var sanFangUrl = [[${@permission.hasPermi('system:sanFangInfo:edit')}]];
         var prefix = ctx + "system/orderInfo";
 
         $(function() {
@@ -106,7 +111,8 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "orderInfo",
+                sanFangUrl:ctx+'system/sanFangInfo/edit/{id}',
+                modalName: "订单",
                 columns: [{
                     checkbox: true
                 },
@@ -117,7 +123,14 @@
                 },
                 {
                     field: 'orderType',
-                    title: '0代表个人使用试剂申购；1代表公用试剂、耗材短缺上报及订购'
+                    title: '申购类型',
+                    formatter:function (value, row, index){
+                        if(value === 0){
+                            return '个人使用试剂申购'
+                        }else if(value === 1){
+                            return '公用试剂、耗材短缺上报及订购'
+                        }else return '未知'
+                    }
                 },
                 {
                     field: 'orderName',
@@ -137,14 +150,20 @@
                 },
                 {
                     field: 'stockstate',
-                    title: '存量情况；0充足，1尚可，2不足'
+                    title: '存量情况',
+                    formatter:function (value,row,index){
+                        if (value == 0) {
+                            return '充足';
+                        }else if (value === 1){
+                            return '尚可';
+                        }else {
+                            return '不足'
+                        }
+
+                    }
                 },
                 {
-                    field: 'experimentuse',
-                    title: '实验用途'
-                },
-                {
-                    field: 'orderUser',
+                    field: 'orderUserName',
                     title: '订购人'
                 },
                 {
@@ -157,15 +176,37 @@
                 },
                 {
                     field: 'checkstate',
-                    title: '审核状态；0是待审核；1是审核成功；2是审核失败'
+                    title: '审核状态',
+                    formatter:function (value,row,index){
+                        if (value === 0) {
+                            return '待审核';
+                        }else if (value === 1){
+                            return '审核成功';
+                        }else {
+                            return '审核失败'
+                        }
+
+                    }
                 },
                 {
-                    field: 'checkUser',
-                    title: '审核人id'
+                    field: 'checkUserName',
+                    title: '审核人'
                 },
                 {
                     field: 'sanfang',
-                    title: '0是不加三方1是加上三方'
+                    title: '是否含三方',
+                    formatter:function (value,row,index){
+                        if (value === 0) {
+                            return '不含三方';
+                        }else if (value === 1){
+                            var action = [];
+                            action.push('<a class="btn btn-success btn-xs ' + sanFangUrl + '" href="javascript:void(0)" onclick="sanFang(\'' + row.id + '\')"><i class="fa fa-edit"></i>查看三方</a> ');
+                            return action.join('');
+                        }else {
+                            return '未知'
+                        }
+
+                    }
                 },
                 {
                     title: '操作',
@@ -180,6 +221,20 @@
             };
             $.table.init(options);
         });
+        function  sanFang(id) {
+            table.set();
+            if($.common.isEmpty(id) && table.options.type == table_type.bootstrapTreeTable) {
+                var row = $("#" + table.options.id).bootstrapTreeTable('getSelections')[0];
+                if ($.common.isEmpty(row)) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                var url = table.options.sanFangUrl.replace("{id}", row[table.options.uniqueId]);
+                $.modal.open("修改" + sanFangInfo, url);
+            } else {
+                $.modal.open("查看三方"  , "sanFangInfo/sanFang/"+id);
+            }
+        }
     </script>
 </body>
 </html>

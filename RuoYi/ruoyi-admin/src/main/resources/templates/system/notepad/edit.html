@@ -13,7 +13,8 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">用户姓名：</label>
                 <div class="col-sm-8">
-                    <select class="form-control" id='userid' name="userid"  data-live-search="true" th:selected="*{userid}" required>
+                    <select class="form-control" id='userid' name="userid"  data-live-search="true" th:field="*{userid}" required>
+                        <option value="" >请输入用户姓名查询</option>
                         <option th:value="*{userid}" th:text="*{userName}"></option>
                     </select>
                 </div>
@@ -74,7 +75,6 @@
             $(".select2-search__field").bind("input propertychange",function(event){
                 var userName = $('#userName').val();
                 if (userName != ''&& chinese.test(userName)){
-                    console.log(userName);
                     $.ajax({
                         type: "post",
                         url: ctx + "system/userinfo/findListLikeByRealName",

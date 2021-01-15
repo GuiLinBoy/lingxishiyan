@@ -7,6 +7,7 @@ import com.ruoyi.system.domain.SanfangInfo;
 import com.ruoyi.system.mapper.OrderInfoMapper;
 import com.ruoyi.system.service.IOrderInfoService;
 import com.ruoyi.system.service.ISanfangInfoService;
+import com.ruoyi.system.service.IUserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class OrderInfoServiceImpl implements IOrderInfoService
 
     @Autowired
     private ISanfangInfoService sanFangInfoService;
-
+    @Autowired
+    private IUserinfoService userinfoService;
 
     /**
      * 查询orderInfo
@@ -37,7 +39,12 @@ public class OrderInfoServiceImpl implements IOrderInfoService
     @Override
     public OrderInfo selectOrderInfoById(Long id)
     {
-        return orderInfoMapper.selectOrderInfoById(id);
+        OrderInfo orderInfoTem = orderInfoMapper.selectOrderInfoById(id);
+        String checkUserName = userinfoService.selectUserinfoById(orderInfoTem.getCheckUser()).getRealname();
+        String orderName = userinfoService.selectUserinfoById(orderInfoTem.getOrderUser()).getRealname();
+        orderInfoTem.setCheckUserName(checkUserName);
+        orderInfoTem.setOrderUserName(orderName);
+        return orderInfoTem;
     }
 
     @Override
@@ -70,7 +77,14 @@ public class OrderInfoServiceImpl implements IOrderInfoService
     @Override
     public List<OrderInfo> selectOrderInfoList(OrderInfo orderInfo)
     {
-        return orderInfoMapper.selectOrderInfoList(orderInfo);
+        List<OrderInfo> orderInfoList = orderInfoMapper.selectOrderInfoList(orderInfo);
+        for (OrderInfo orderInfoTem: orderInfoList){
+            String checkUserName = userinfoService.selectUserinfoById(orderInfoTem.getCheckUser()).getRealname();
+            String orderName = userinfoService.selectUserinfoById(orderInfoTem.getOrderUser()).getRealname();
+            orderInfoTem.setCheckUserName(checkUserName);
+            orderInfoTem.setOrderUserName(orderName);
+        }
+        return orderInfoList;
     }
 
     /**

@@ -148,6 +148,7 @@ public class UserinfoController extends BaseController
     @ResponseBody
     public AjaxResult remove(String ids)
     {
-        return toAjax(userinfoService.deleteUserinfoByIds(ids));
+//        return toAjax(userinfoService.deleteUserinfoByIds(ids));
+        return error("禁止删除用户");
     }
 }

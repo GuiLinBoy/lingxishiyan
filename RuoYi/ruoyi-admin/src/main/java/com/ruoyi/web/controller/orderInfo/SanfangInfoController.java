@@ -42,12 +42,12 @@ public class SanfangInfoController extends BaseController
      * 查询sanFangInfo列表
      */
     @RequiresPermissions("system:sanFangInfo:list")
-    @PostMapping("/list")
+    @RequestMapping("/list/{id}")
     @ResponseBody
-    public TableDataInfo list(SanfangInfo sanfangInfo)
+    public TableDataInfo list(@PathVariable("id") Integer id)
     {
         startPage();
-        List<SanfangInfo> list = sanfangInfoService.selectSanfangInfoList(sanfangInfo);
+        List<SanfangInfo> list = sanfangInfoService.selectSanfangInfoByOrderId(id.longValue());
         return getDataTable(list);
     }
 
@@ -68,9 +68,10 @@ public class SanfangInfoController extends BaseController
     /**
      * 新增sanFangInfo
      */
-    @GetMapping("/add")
-    public String add()
+    @RequestMapping("/add/{id}")
+    public String add(@PathVariable("id") Integer id, ModelMap mmap)
     {
+        mmap.put("orderId", id);
         return prefix + "/add";
     }
 
@@ -84,6 +85,16 @@ public class SanfangInfoController extends BaseController
     public AjaxResult addSave(SanfangInfo sanfangInfo)
     {
         return toAjax(sanfangInfoService.insertSanfangInfo(sanfangInfo));
+    }
+
+    /**
+     * 查看三方
+     */
+    @GetMapping("/sanFang/{id}")
+    public String sanFang(@PathVariable("id") Integer id, ModelMap mmap)
+    {
+        mmap.put("orderId", id);
+        return prefix + "/sanFangInfo";
     }
 
     /**
