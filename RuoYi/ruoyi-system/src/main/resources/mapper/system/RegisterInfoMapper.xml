@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stockstate != null "> and stockstate = #{stockstate}</if>
             <if test="experimentuse != null  and experimentuse != ''"> and experimentuse = #{experimentuse}</if>
             <if test="preserver != null "> and preserver = #{preserver}</if>
-            <if test="orderTimes != null "> and  date(order_times) = #{orderTimes}</if>
+            <if test="orderTimes != null "> and  date(order_times) = #{orderTimes,jdbcType=TIMESTAMP}</if>
             <if test="registerUser != null "> and register_user = #{registerUser}</if>
         </where>
     </select>
@@ -94,7 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stockstate != null">stockstate = #{stockstate},</if>
             <if test="experimentuse != null and experimentuse != ''">experimentuse = #{experimentuse},</if>
             <if test="preserver != null">preserver = #{preserver},</if>
-            <if test="orderTimes != null">order_times = #{orderTimes},</if>
+            <if test="orderTimes != null">order_times = #{orderTimes,jdbcType=TIMESTAMP},</if>
             <if test="registerUser != null">register_user = #{registerUser},</if>
         </trim>
         where id = #{id}

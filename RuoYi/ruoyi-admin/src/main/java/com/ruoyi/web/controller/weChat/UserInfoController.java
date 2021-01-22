@@ -113,4 +113,12 @@ public class UserInfoController {
         List<Userinfo> userinfoList = userinfoService.findUserByGroupIdAunitid(unitid, groupId);
         return registerInfoService.selectRegisterByUserId(userinfoList);
     }
+
+    @ResponseBody
+    @RequestMapping("/findUserInfoById")
+    public Userinfo findUserInfoById(Integer id){
+        if (id != null) {
+            return userinfoService.selectUserinfoById(id.longValue());
+        }else return null;
+    }
 }

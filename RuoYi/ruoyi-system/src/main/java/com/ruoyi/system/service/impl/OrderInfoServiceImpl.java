@@ -118,6 +118,14 @@ public class OrderInfoServiceImpl implements IOrderInfoService
         return 0;
     }
 
+    @Override
+    public int updateCheckState(Integer id, Integer checkState) {
+
+        OrderInfo orderInfo = this.selectOrderInfoById(id.longValue());
+        orderInfo.setCheckstate(checkState);
+        return this.updateOrderInfo(orderInfo);
+    }
+
     /**
      * 修改orderInfo
      * 

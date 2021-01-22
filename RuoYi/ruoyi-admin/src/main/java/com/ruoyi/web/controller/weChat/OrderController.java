@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.weChat;
 
+import com.ruoyi.common.annotation.RepeatSubmit;
 import com.ruoyi.system.domain.OrderAndSanFang;
 import com.ruoyi.system.domain.SanfangInfo;
 import com.ruoyi.system.service.IOrderInfoService;
@@ -64,5 +65,13 @@ public class OrderController {
         if (OrderId != null) {
             return sanfangInfoService.selectSanfangInfoByOrderId(OrderId.longValue());
         }else return null;
+    }
+
+    @ResponseBody
+    @RequestMapping("/updateCheckState")
+    public int updateCheckState(Integer id ,Integer checkState){
+        if (id != null && checkState != null){
+            return orderService.updateCheckState(id,checkState);
+        }else return -1;
     }
 }

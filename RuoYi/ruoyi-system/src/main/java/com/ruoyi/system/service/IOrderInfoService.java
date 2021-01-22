@@ -67,4 +67,6 @@ public interface IOrderInfoService
     OrderAndSanFang selectOrderInfoByOrderUserId(Integer OrderUserId);
 
     int saveAndUpdateOrder(OrderAndSanFang orderAndSanFang);
+
+    int updateCheckState(Integer id, Integer checkState);
 }

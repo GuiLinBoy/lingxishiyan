@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stockstate != null "> and stockstate = #{stockstate}</if>
             <if test="experimentuse != null  and experimentuse != ''"> and experimentuse = #{experimentuse}</if>
             <if test="orderUser != null "> and order_user = #{orderUser}</if>
-            <if test="orderTime != null "> and order_time = #{orderTime}</if>
+            <if test="orderTime != null "> and order_time = #{orderTime,jdbcType=TIMESTAMP}</if>
             <if test="offerPrice != null "> and offer_price = #{offerPrice}</if>
             <if test="checkstate != null "> and checkstate = #{checkstate}</if>
             <if test="checkUser != null "> and check_user = #{checkUser}</if>
@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stockstate != null">#{stockstate},</if>
             <if test="experimentuse != null">#{experimentuse},</if>
             <if test="orderUser != null">#{orderUser},</if>
-            <if test="orderTime != null">#{orderTime},</if>
+            <if test="orderTime != null">#{orderTime,jdbcType=TIMESTAMP},</if>
             <if test="offerPrice != null">#{offerPrice},</if>
             <if test="checkstate != null">#{checkstate},</if>
             <if test="checkUser != null">#{checkUser},</if>
@@ -103,7 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stockstate != null">stockstate = #{stockstate},</if>
             <if test="experimentuse != null">experimentuse = #{experimentuse},</if>
             <if test="orderUser != null">order_user = #{orderUser},</if>
-            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="orderTime != null">order_time = #{orderTime,jdbcType=TIMESTAMP},</if>
             <if test="offerPrice != null">offer_price = #{offerPrice},</if>
             <if test="checkstate != null">checkstate = #{checkstate},</if>
             <if test="checkUser != null">check_user = #{checkUser},</if>
