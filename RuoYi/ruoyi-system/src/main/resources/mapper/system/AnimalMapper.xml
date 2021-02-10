@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AnimalMapper">
+    
+    <resultMap type="Animal" id="AnimalResult">
+        <result property="id"    column="id"    />
+        <result property="registerId"    column="register_id"    />
+        <result property="animalType"    column="animal_type"    />
+        <result property="age"    column="age"    />
+        <result property="gender"    column="gender"    />
+        <result property="animalNum"    column="animal_num"    />
+        <result property="address"    column="address"    />
+        <result property="orderIf"    column="order_if"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectAnimalVo">
+        select id, register_id, animal_type, age, gender, animal_num, address, order_if, delete_flag from animal
+    </sql>
+
+    <select id="selectAnimalList" parameterType="Animal" resultMap="AnimalResult">
+        <include refid="selectAnimalVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="registerId != null "> and register_id = #{registerId}</if>
+            <if test="animalType != null  and animalType != ''"> and animal_type = #{animalType}</if>
+            <if test="age != null  and age != ''"> and age = #{age}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="animalNum != null "> and animal_num = #{animalNum}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="orderIf != null "> and order_if = #{orderIf}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectAnimalById" parameterType="Long" resultMap="AnimalResult">
+        <include refid="selectAnimalVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="findAnimalByOrderId" parameterType="Long" resultMap="AnimalResult">
+        <include refid="selectAnimalVo"/>
+        where register_id = #{orderId} and order_if = #{orderIf}
+    </select>
+        
+    <insert id="insertAnimal" parameterType="Animal" useGeneratedKeys="true" keyProperty="id">
+        insert into animal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">register_id,</if>
+            <if test="animalType != null">animal_type,</if>
+            <if test="age != null">age,</if>
+            <if test="gender != null">gender,</if>
+            <if test="animalNum != null">animal_num,</if>
+            <if test="address != null">address,</if>
+            <if test="orderIf != null">order_if,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">#{registerId},</if>
+            <if test="animalType != null">#{animalType},</if>
+            <if test="age != null">#{age},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="animalNum != null">#{animalNum},</if>
+            <if test="address != null">#{address},</if>
+            <if test="orderIf != null">#{orderIf},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAnimal" parameterType="Animal">
+        update animal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="registerId != null">register_id = #{registerId},</if>
+            <if test="animalType != null">animal_type = #{animalType},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="animalNum != null">animal_num = #{animalNum},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="orderIf != null">order_if = #{orderIf},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAnimalById" parameterType="Long">
+        delete from animal where id = #{id}
+    </delete>
+
+    <delete id="deleteAnimalByIds" parameterType="String">
+        delete from animal where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

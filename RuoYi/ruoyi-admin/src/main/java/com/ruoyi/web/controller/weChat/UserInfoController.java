@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.weChat;
 
+import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.system.domain.RegisterInfo;
 import com.ruoyi.system.domain.ResearchGroups;
 import com.ruoyi.system.domain.Userinfo;
@@ -8,10 +9,8 @@ import com.ruoyi.system.service.IResearchGroupsService;
 import com.ruoyi.system.service.IUserinfoService;
 import com.ruoyi.web.controller.tool.UserInfoUnTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/weChat")
-public class UserInfoController {
+public class UserInfoController extends BaseController {
 
     @Autowired
     private IUserinfoService userinfoService;
@@ -31,6 +30,18 @@ public class UserInfoController {
 
     @Autowired
     private IResearchGroupsService researchGroupsService;
+
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 登录
+     * @Date 15:54 2021/2/10
+     * @Param
+     * @return
+     **/
+    @PostMapping("/login")
+    @ResponseBody
+    public
     /**
      * @Author ZhangGY
      * @Description //TODO 根据openID查询人员列表
@@ -48,6 +59,20 @@ public class UserInfoController {
         return null;
     }
 
+
+    /**
+     * @Author ZhangGY
+     * @Description //TODO 首页搜索框
+     * @Date 15:40 2021/2/7
+     * @Param
+     * @return
+     **/
+    @PostMapping("/searchData")
+    @ResponseBody
+    public List searchData(Integer unitsId ,Integer groupId, String searchTem){
+        List searchData = userinfoService.searchData(unitsId,groupId,searchTem);
+        return searchData;
+    }
     /**
      * @Author ZhangGY
      * @Description //TODO 插入用户信息
@@ -80,9 +105,9 @@ public class UserInfoController {
      **/
     @ResponseBody
     @RequestMapping("/findUserByGroupIdAunitid")
-    public List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId){
-        if (unitid != null && researchGroupId != null){
-            return userinfoService.findUserByGroupIdAunitid(unitid,researchGroupId);
+    public List<Userinfo> findUserByGroupIdAunitid(Integer userId,Integer unitid, Integer researchGroupId){
+        if (unitid != null && researchGroupId != null && userId !=null){
+            return userinfoService.findUserByGroupIdAunitid(userId , unitid,researchGroupId);
         }else
             return null;
     }
@@ -110,7 +135,7 @@ public class UserInfoController {
     @ResponseBody
     @RequestMapping("/findRegisterGroupAll")
     public List<RegisterInfo> findRegisterGroupAll(Integer unitid, Integer groupId){
-        List<Userinfo> userinfoList = userinfoService.findUserByGroupIdAunitid(unitid, groupId);
+        List<Userinfo> userinfoList = userinfoService.findUserByGroupIdAunitid(-1,unitid, groupId);
         return registerInfoService.selectRegisterByUserId(userinfoList);
     }
 

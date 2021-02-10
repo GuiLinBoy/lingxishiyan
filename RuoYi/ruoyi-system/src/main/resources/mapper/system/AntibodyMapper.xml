@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AntibodyMapper">
+    
+    <resultMap type="Antibody" id="AntibodyResult">
+        <result property="id"    column="id"    />
+        <result property="registerId"    column="register_id"    />
+        <result property="antibodyType"    column="antibody_type"    />
+        <result property="tracerTag"    column="tracerTag"    />
+        <result property="sourcesSpices"    column="sources_spices"    />
+        <result property="orderIf"    column="order_if"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectAntibodyVo">
+        select id, register_id, antibody_type, tracerTag, sources_spices, order_if, delete_flag from antibody
+    </sql>
+
+    <select id="selectAntibodyList" parameterType="Antibody" resultMap="AntibodyResult">
+        <include refid="selectAntibodyVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="registerId != null "> and register_id = #{registerId}</if>
+            <if test="antibodyType != null  and antibodyType != ''"> and antibody_type = #{antibodyType}</if>
+            <if test="tracerTag != null  and tracerTag != ''"> and tracerTag = #{tracerTag}</if>
+            <if test="sourcesSpices != null  and sourcesSpices != ''"> and sources_spices = #{sourcesSpices}</if>
+            <if test="orderIf != null "> and order_if = #{orderIf}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectAntibodyById" parameterType="Long" resultMap="AntibodyResult">
+        <include refid="selectAntibodyVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="findAntiBodyByOrderId" parameterType="Long" resultMap="AntibodyResult">
+        <include refid="selectAntibodyVo"/>
+        where register_id = #{orderId} and order_if = #{orderIf}
+    </select>
+
+    <insert id="insertAntibody" parameterType="Antibody" useGeneratedKeys="true" keyProperty="id">
+        insert into antibody
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">register_id,</if>
+            <if test="antibodyType != null and antibodyType != ''">antibody_type,</if>
+            <if test="tracerTag != null">tracerTag,</if>
+            <if test="sourcesSpices != null">sources_spices,</if>
+            <if test="orderIf != null">order_if,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">#{registerId},</if>
+            <if test="antibodyType != null and antibodyType != ''">#{antibodyType},</if>
+            <if test="tracerTag != null">#{tracerTag},</if>
+            <if test="sourcesSpices != null">#{sourcesSpices},</if>
+            <if test="orderIf != null">#{orderIf},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAntibody" parameterType="Antibody">
+        update antibody
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="registerId != null">register_id = #{registerId},</if>
+            <if test="antibodyType != null and antibodyType != ''">antibody_type = #{antibodyType},</if>
+            <if test="tracerTag != null">tracerTag = #{tracerTag},</if>
+            <if test="sourcesSpices != null">sources_spices = #{sourcesSpices},</if>
+            <if test="orderIf != null">order_if = #{orderIf},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAntibodyById" parameterType="Long">
+        delete from antibody where id = #{id}
+    </delete>
+
+    <delete id="deleteAntibodyByIds" parameterType="String">
+        delete from antibody where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

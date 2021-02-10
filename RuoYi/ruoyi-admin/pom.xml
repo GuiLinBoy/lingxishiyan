@@ -60,7 +60,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
+        <!-- 代码生成-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-generator</artifactId>
+        </dependency>
         <!-- 核心模块-->
         <dependency>
             <groupId>com.ruoyi</groupId>

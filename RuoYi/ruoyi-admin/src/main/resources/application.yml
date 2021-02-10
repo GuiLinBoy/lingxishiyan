@@ -10,6 +10,7 @@ ruoyi:
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: C:/ruoyi/uploadPath
+#  profile: /usr/work/lingxi/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
@@ -17,6 +18,7 @@ ruoyi:
 server:
   # 服务器的HTTP端口，默认为80
   port: 8080
+#  port: 8095
   servlet:
     # 应用的访问路径
     context-path: /

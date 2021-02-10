@@ -35,6 +35,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentCometime != null "> and student_cometime = #{studentCometime}</if>
         </where>
     </select>
+
+    <select id="selectRealNameByIds" resultMap="UserinfoResult">
+        <include refid="selectUserinfoVo"/>
+                WHERE id in
+        <foreach item="id" collection="userIdList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
     
     <select id="selectUserinfoById" parameterType="Long" resultMap="UserinfoResult">
         <include refid="selectUserinfoVo"/>
@@ -57,6 +65,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectUserByGroupIdAunitid" parameterType="Integer" resultMap="UserinfoResult">
         <include refid="selectUserinfoVo"/>
         where research_group_id = #{researchGroupId} and unitid = #{unitid} and (jurisdiction = 0 or  jurisdiction = 1)
+    </select>
+
+    <select id="selectAllUserByGroupIdAunitid" parameterType="Integer" resultMap="UserinfoResult">
+        <include refid="selectUserinfoVo"/>
+        where research_group_id = #{researchGroupId} and unitid = #{unitid}
     </select>
         
     <insert id="insertUserinfo" parameterType="Userinfo" useGeneratedKeys="true" keyProperty="id">

@@ -46,13 +46,14 @@ public class RegisterInfo extends BaseEntity
     private String experimentuse;
 
     /** 保管人 */
-    @Excel(name = "保管人")
+    @Excel(name = "")
     private Long preserver;
 
     /** 订购时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "订购时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "订购时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date orderTimes;
+    private Integer deleteFlag;
 
     /** 登记人 */
     @Excel(name = "登记人")
@@ -62,6 +63,14 @@ public class RegisterInfo extends BaseEntity
 
     public String getRegisterUserName() {
         return registerUserName;
+    }
+
+    public Integer getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Integer deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 
     public void setRegisterUserName(String registerUserName) {

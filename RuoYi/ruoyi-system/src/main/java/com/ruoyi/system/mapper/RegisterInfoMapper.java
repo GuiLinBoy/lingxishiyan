@@ -67,4 +67,6 @@ public interface RegisterInfoMapper
     List<RegisterInfo> selectRegisterInfoByUserId(Integer registerUser);
 
     List<RegisterInfo> selectRegisterByUserId(@Param("userinfoList") List<Userinfo> userinfoList);
+
+    List<RegisterInfo> searchRegisterData(@Param("userIdList") List<Integer> userIdList,@Param("searchTem") String searchTem);
 }

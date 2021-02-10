@@ -65,7 +65,12 @@ public interface UserinfoMapper
 
     Userinfo selectUserinfoByOpenId(String openId);
 
-    List<Userinfo> selectUserByGroupIdAunitid(@Param("unitid") Integer unitid,@Param("researchGroupId") Integer researchGroupId);
+    List<Userinfo> selectUserByGroupIdAunitid(@Param("userId") Integer userId ,@Param("unitid") Integer unitid,@Param("researchGroupId") Integer researchGroupId);
+
+    List<Userinfo> selectAllUserByGroupIdAunitid(@Param("unitid") Integer unitid,@Param("researchGroupId") Integer researchGroupId);
+
 
     List<Userinfo> selectListLikeByRealName(String realName);
+
+    List<Userinfo> selectRealNameByIds(@Param("userIdList") List<Integer> userIdList);
 }

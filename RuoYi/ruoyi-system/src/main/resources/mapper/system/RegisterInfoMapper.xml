@@ -15,11 +15,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="preserver"    column="preserver"    />
         <result property="orderTimes"    column="order_times"    />
         <result property="registerUser"    column="register_user"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <resultMap type="RegisterInfo" id="RegisterInfo">
+        <result property="id"    column="id"    />
+        <result property="reagentName"    column="reagent_name"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="dealer"    column="dealer"    />
+        <result property="goodsid"    column="goodsid"    />
+        <result property="stockstate"    column="stockstate"    />
+        <result property="experimentuse"    column="experimentuse"    />
+        <result property="preserver"    column="preserver"    />
+        <result property="orderTimes"    column="order_times"    />
+        <result property="registerUser"    column="register_user"    />
+        <result property="registerUserName"    column="registerUserName"    />
+        <result property="deleteFlag"    column="delete_flag"    />
     </resultMap>
 
     <sql id="selectRegisterInfoVo">
         select id, reagent_name, manufacturer, dealer, goodsid, stockstate, experimentuse, preserver, order_times, register_user from register_info
     </sql>
+
+
+    <select id="searchRegisterData" resultMap="RegisterInfo">
+        SELECT *,userinfo.realname as registerUserName FROM register_info,userinfo
+        WHERE (reagent_name like concat('%',#{searchTem},'%') or manufacturer like concat('%',#{searchTem},'%')  or dealer like concat('%',#{searchTem},'%')  )and  register_user in
+        <foreach item="id" collection="userIdList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and register_info.register_user = userinfo.id
+    </select>
 
     <select id="selectRegisterInfoList" parameterType="RegisterInfo" resultMap="RegisterInfoResult">
         <include refid="selectRegisterInfoVo"/>
@@ -33,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="preserver != null "> and preserver = #{preserver}</if>
             <if test="orderTimes != null "> and  date(order_times) = #{orderTimes,jdbcType=TIMESTAMP}</if>
             <if test="registerUser != null "> and register_user = #{registerUser}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
         </where>
     </select>
     
@@ -70,7 +97,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="preserver != null">preserver,</if>
             <if test="orderTimes != null">order_times,</if>
             <if test="registerUser != null">register_user,</if>
-         </trim>
+            <if test="deleteFlag != null">delete_flag,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="reagentName != null and reagentName != ''">#{reagentName},</if>
             <if test="manufacturer != null and manufacturer != ''">#{manufacturer},</if>
@@ -81,7 +109,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="preserver != null">#{preserver},</if>
             <if test="orderTimes != null">#{orderTimes,jdbcType=TIMESTAMP},</if>
             <if test="registerUser != null">#{registerUser},</if>
-         </trim>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+        </trim>
     </insert>
 
     <update id="updateRegisterInfo" parameterType="RegisterInfo">
@@ -96,6 +125,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="preserver != null">preserver = #{preserver},</if>
             <if test="orderTimes != null">order_times = #{orderTimes,jdbcType=TIMESTAMP},</if>
             <if test="registerUser != null">register_user = #{registerUser},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
         </trim>
         where id = #{id}
     </update>

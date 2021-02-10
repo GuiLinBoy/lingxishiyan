@@ -71,9 +71,13 @@ public interface IUserinfoService
 
     int insertAndUpdateUserInfo(Userinfo userinfo);
 
-    List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId);
+    List<Userinfo> findUserByGroupIdAunitid(Integer userId,Integer unitid, Integer researchGroupId);
 
     List<Userinfo> selectUserinfoListTo(Userinfo userinfo);
 
     List<Userinfo> selectListLikeByRealName(String realName);
+
+    List<Userinfo> selectRealNameByIds(List<Integer> userIdList);
+
+    List searchData(Integer unitsId, Integer groupId, String searchTem);
 }

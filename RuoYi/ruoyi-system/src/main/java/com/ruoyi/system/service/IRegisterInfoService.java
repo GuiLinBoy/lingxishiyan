@@ -1,7 +1,6 @@
 package com.ruoyi.system.service;
 
-import com.ruoyi.system.domain.RegisterInfo;
-import com.ruoyi.system.domain.Userinfo;
+import com.ruoyi.system.domain.*;
 
 import java.util.List;
 
@@ -63,7 +62,19 @@ public interface IRegisterInfoService
 
     List<RegisterInfo> selectRegisterInfoByUserId(Integer registerUser);
 
-    int saveAndUpdateRegisterInfo(RegisterInfo registerInfo);
+    int saveAndUpdateRegisterInfo(RegisterInfoTool registerInfoTool);
 
     List<RegisterInfo> selectRegisterByUserId(List<Userinfo> userinfoList);
+
+    Antibody findAntiBodyByOrderId(Integer registerId);
+
+    Plasmid findPlasmidByOrderId(Integer registerId);
+
+    Cell findCellByOrderId(Integer registerId);
+
+    Microbial findMicrobialByOrderId(Integer registerId);
+
+    Animal findAnimalByOrderId(Integer registerId);
+
+    List<RegisterInfo> searchRegisterData(List<Integer> userIdList, String searchTem);
 }

@@ -3,15 +3,17 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.OrderInfoMapper">
-    
+
     <resultMap type="OrderInfo" id="OrderInfoResult">
         <result property="id"    column="id"    />
         <result property="orderType"    column="order_type"    />
         <result property="orderName"    column="order_name"    />
+        <result property="orderSurname"    column="order_surname"    />
         <result property="manufacturer"    column="manufacturer"    />
         <result property="dealer"    column="dealer"    />
         <result property="goodsid"    column="goodsid"    />
         <result property="stockstate"    column="stockstate"    />
+        <result property="specifications"    column="specifications"    />
         <result property="experimentuse"    column="experimentuse"    />
         <result property="orderUser"    column="order_user"    />
         <result property="orderTime"    column="order_time"    />
@@ -19,10 +21,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="checkstate"    column="checkstate"    />
         <result property="checkUser"    column="check_user"    />
         <result property="sanfang"    column="sanfang"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <resultMap type="OrderInfo" id="OrderInfo">
+        <result property="id"    column="id"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="orderName"    column="order_name"    />
+        <result property="orderSurname"    column="order_surname"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="dealer"    column="dealer"    />
+        <result property="goodsid"    column="goodsid"    />
+        <result property="stockstate"    column="stockstate"    />
+        <result property="specifications"    column="specifications"    />
+        <result property="experimentuse"    column="experimentuse"    />
+        <result property="orderUser"    column="order_user"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="offerPrice"    column="offer_price"    />
+        <result property="checkstate"    column="checkstate"    />
+        <result property="checkUser"    column="check_user"    />
+        <result property="orderUserName"    column="orderUserName"    />
+        <result property="sanfang"    column="sanfang"    />
+        <result property="deleteFlag"    column="delete_flag"    />
     </resultMap>
 
     <sql id="selectOrderInfoVo">
-        select id, order_type, order_name, manufacturer, dealer, goodsid, stockstate, experimentuse, order_user, order_time, offer_price, checkstate, check_user, sanfang from order_info
+        select id, order_type, order_name, order_surname, manufacturer, dealer, goodsid, stockstate,specifications, experimentuse, order_user, order_time, offer_price, checkstate, check_user, sanfang, delete_flag from order_info
     </sql>
 
     <select id="selectOrderInfoList" parameterType="OrderInfo" resultMap="OrderInfoResult">
@@ -30,10 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="orderType != null "> and order_type = #{orderType}</if>
             <if test="orderName != null "> and order_name like concat('%', #{orderName}, '%')</if>
+            <if test="orderSurname != null  and orderSurname != ''"> and order_surname like concat('%', #{orderSurname}, '%')</if>
             <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
             <if test="dealer != null  and dealer != ''"> and dealer = #{dealer}</if>
             <if test="goodsid != null  and goodsid != ''"> and goodsid = #{goodsid}</if>
             <if test="stockstate != null "> and stockstate = #{stockstate}</if>
+            <if test="specifications != null  and specifications != ''"> and specifications = #{specifications}</if>
             <if test="experimentuse != null  and experimentuse != ''"> and experimentuse = #{experimentuse}</if>
             <if test="orderUser != null "> and order_user = #{orderUser}</if>
             <if test="orderTime != null "> and order_time = #{orderTime,jdbcType=TIMESTAMP}</if>
@@ -41,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkstate != null "> and checkstate = #{checkstate}</if>
             <if test="checkUser != null "> and check_user = #{checkUser}</if>
             <if test="sanfang != null "> and sanfang = #{sanfang}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
         </where>
     </select>
     
@@ -53,20 +80,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectOrderInfoVo"/>
         where check_user = #{checkUserId}
     </select>
+
+    <select id="selectOrderInfoByCheckUserIdAndState" parameterType="Integer" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        where check_user = #{checkUserId} and checkstate =  #{checkState}
+    </select>
+
+    <select id="findOrderCount" parameterType="Long" resultType="Integer">
+        SELECT count(1) FROM order_info WHERE  check_user = #{checkUserId} and checkstate != 1
+    </select>
+
     <select id="selectOrderInfoByOrderUserId" parameterType="Integer" resultMap="OrderInfoResult">
         <include refid="selectOrderInfoVo"/>
         where order_user = #{OrderUserId}
     </select>
-        
+
+    <select id="selectOrderInfoByOrderUserIdAndcheckState" parameterType="Integer" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        where order_user = #{OrderUserId} and checkstate =  #{checkState}
+    </select>
+
+    <select id="selectOrderInfoByOrderUserAndCheck" parameterType="Integer" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        where order_user = #{orderUserId} and check_user = #{checkUserId}
+    </select>
+
+    <select id="selectOrderInfoByOrderUserAndCheckState" parameterType="Integer" resultMap="OrderInfoResult">
+        <include refid="selectOrderInfoVo"/>
+        where order_user = #{orderUserId} and check_user = #{checkUserId} and  checkstate =  #{checkState}
+    </select>
+
+
+    <select id="searchOrderData" resultMap="OrderInfo">
+        SELECT *,userinfo.realname as checkUserName FROM order_info,userinfo
+        WHERE (order_surname like concat('%',#{searchTem},'%') or manufacturer like concat('%',#{searchTem},'%') or dealer like concat('%',#{searchTem},'%') )and  order_user in
+        <foreach item="id" collection="userIdList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and (order_type = 1 or (order_type = 0 and checkstate =1)) and order_user = userinfo.id
+    </select>
+
     <insert id="insertOrderInfo" parameterType="OrderInfo" useGeneratedKeys="true" keyProperty="id">
         insert into order_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orderType != null">order_type,</if>
             <if test="orderName != null">order_name,</if>
+            <if test="orderSurname != null">order_surname,</if>
             <if test="manufacturer != null">manufacturer,</if>
             <if test="dealer != null">dealer,</if>
             <if test="goodsid != null">goodsid,</if>
             <if test="stockstate != null">stockstate,</if>
+            <if test="specifications != null">specifications,</if>
             <if test="experimentuse != null">experimentuse,</if>
             <if test="orderUser != null">order_user,</if>
             <if test="orderTime != null">order_time,</if>
@@ -74,14 +138,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkstate != null">checkstate,</if>
             <if test="checkUser != null">check_user,</if>
             <if test="sanfang != null">sanfang,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderType != null">#{orderType},</if>
             <if test="orderName != null">#{orderName},</if>
+            <if test="orderSurname != null">#{orderSurname},</if>
             <if test="manufacturer != null">#{manufacturer},</if>
             <if test="dealer != null">#{dealer},</if>
             <if test="goodsid != null">#{goodsid},</if>
             <if test="stockstate != null">#{stockstate},</if>
+            <if test="specifications != null">#{specifications},</if>
             <if test="experimentuse != null">#{experimentuse},</if>
             <if test="orderUser != null">#{orderUser},</if>
             <if test="orderTime != null">#{orderTime,jdbcType=TIMESTAMP},</if>
@@ -89,6 +156,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkstate != null">#{checkstate},</if>
             <if test="checkUser != null">#{checkUser},</if>
             <if test="sanfang != null">#{sanfang},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
          </trim>
     </insert>
 
@@ -97,10 +165,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="orderType != null">order_type = #{orderType},</if>
             <if test="orderName != null">order_name = #{orderName},</if>
+            <if test="orderSurname != null">order_surname = #{orderSurname},</if>
             <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
             <if test="dealer != null">dealer = #{dealer},</if>
             <if test="goodsid != null">goodsid = #{goodsid},</if>
             <if test="stockstate != null">stockstate = #{stockstate},</if>
+            <if test="specifications != null">specifications = #{specifications},</if>
             <if test="experimentuse != null">experimentuse = #{experimentuse},</if>
             <if test="orderUser != null">order_user = #{orderUser},</if>
             <if test="orderTime != null">order_time = #{orderTime,jdbcType=TIMESTAMP},</if>
@@ -108,6 +178,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkstate != null">checkstate = #{checkstate},</if>
             <if test="checkUser != null">check_user = #{checkUser},</if>
             <if test="sanfang != null">sanfang = #{sanfang},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
         </trim>
         where id = #{id}
     </update>

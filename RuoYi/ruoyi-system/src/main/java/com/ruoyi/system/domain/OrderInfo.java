@@ -29,7 +29,7 @@ public class OrderInfo extends BaseEntity
     /** 订购名称 */
     @Excel(name = "订购名称")
     private Long orderName;
-
+    private String orderSurname;
     /** 制造商 */
     @Excel(name = "制造商")
     private String manufacturer;
@@ -46,6 +46,7 @@ public class OrderInfo extends BaseEntity
     @Excel(name = "存量情况；0充足，1尚可，2不足")
     private Long stockstate;
 
+    private String specifications;
     /** 实验用途 */
     @Excel(name = "实验用途")
     private String experimentuse;
@@ -57,8 +58,8 @@ public class OrderInfo extends BaseEntity
     private String orderUserName;
 
     /** 订购时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "订购时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "订购时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date orderTime;
 
     /** 报价 */
@@ -78,6 +79,31 @@ public class OrderInfo extends BaseEntity
     /** 0是不加三方1是加上三方 */
     @Excel(name = "0是不加三方1是加上三方")
     private Long sanfang;
+    private Integer deleteFlag;
+
+    public Integer getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Integer deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public String getSpecifications() {
+        return specifications;
+    }
+
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
+    }
+
+    public String getOrderSurname() {
+        return orderSurname;
+    }
+
+    public void setOrderSurname(String orderSurname) {
+        this.orderSurname = orderSurname;
+    }
 
     public String getOrderUserName() {
         return orderUserName;

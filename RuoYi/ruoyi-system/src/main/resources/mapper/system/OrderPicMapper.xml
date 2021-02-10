@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OrderPicMapper">
+    
+    <resultMap type="OrderPic" id="OrderPicResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="url"    column="url"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectOrderPicVo">
+        select id, order_id, url, file_name, delete_flag from order_pic
+    </sql>
+
+    <select id="selectOrderPicList" parameterType="OrderPic" resultMap="OrderPicResult">
+        <include refid="selectOrderPicVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderPicById" parameterType="Long" resultMap="OrderPicResult">
+        <include refid="selectOrderPicVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="findOrderPicByOrderId" parameterType="Long" resultMap="OrderPicResult">
+        <include refid="selectOrderPicVo"/>
+        where order_id = #{orderId}
+    </select>
+
+    <insert id="insertOrderPic" parameterType="OrderPic" useGeneratedKeys="true" keyProperty="id">
+        insert into order_pic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="url != null">url,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="url != null">#{url},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderPic" parameterType="OrderPic">
+        update order_pic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderPicById" parameterType="Long">
+        delete from order_pic where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderPicByIds" parameterType="String">
+        delete from order_pic where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

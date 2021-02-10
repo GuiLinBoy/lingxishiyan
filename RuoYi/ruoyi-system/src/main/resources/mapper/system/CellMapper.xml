@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CellMapper">
+    
+    <resultMap type="Cell" id="CellResult">
+        <result property="id"    column="id"    />
+        <result property="registerId"    column="register_id"    />
+        <result property="sourcesSpices"    column="sources_spices"    />
+        <result property="sources"    column="sources"    />
+        <result property="existState"    column="exist_state"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="orderIf"    column="order_if"    />
+    </resultMap>
+
+    <sql id="selectCellVo">
+        select id, register_id, sources_spices, sources, exist_state, delete_flag, order_if from cell
+    </sql>
+
+    <select id="selectCellList" parameterType="Cell" resultMap="CellResult">
+        <include refid="selectCellVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="registerId != null "> and register_id = #{registerId}</if>
+            <if test="sourcesSpices != null  and sourcesSpices != ''"> and sources_spices = #{sourcesSpices}</if>
+            <if test="sources != null  and sources != ''"> and sources = #{sources}</if>
+            <if test="existState != null  and existState != ''"> and exist_state = #{existState}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+            <if test="orderIf != null "> and order_if = #{orderIf}</if>
+        </where>
+    </select>
+    
+    <select id="selectCellById" parameterType="Long" resultMap="CellResult">
+        <include refid="selectCellVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="findCellByOrderId" parameterType="Long" resultMap="CellResult">
+        <include refid="selectCellVo"/>
+        where register_id = #{orderId} and order_if = #{orderIf}
+    </select>
+
+    <insert id="insertCell" parameterType="Cell" useGeneratedKeys="true" keyProperty="id">
+        insert into cell
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">register_id,</if>
+            <if test="sourcesSpices != null">sources_spices,</if>
+            <if test="sources != null">sources,</if>
+            <if test="existState != null">exist_state,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+            <if test="orderIf != null">order_if,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">#{registerId},</if>
+            <if test="sourcesSpices != null">#{sourcesSpices},</if>
+            <if test="sources != null">#{sources},</if>
+            <if test="existState != null">#{existState},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+            <if test="orderIf != null">#{orderIf},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCell" parameterType="Cell">
+        update cell
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="registerId != null">register_id = #{registerId},</if>
+            <if test="sourcesSpices != null">sources_spices = #{sourcesSpices},</if>
+            <if test="sources != null">sources = #{sources},</if>
+            <if test="existState != null">exist_state = #{existState},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+            <if test="orderIf != null">order_if = #{orderIf},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCellById" parameterType="Long">
+        delete from cell where id = #{id}
+    </delete>
+
+    <delete id="deleteCellByIds" parameterType="String">
+        delete from cell where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

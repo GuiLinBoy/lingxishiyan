@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PlasmidMapper">
+    
+    <resultMap type="Plasmid" id="PlasmidResult">
+        <result property="id"    column="id"    />
+        <result property="registerId"    column="register_id"    />
+        <result property="tracerTag"    column="tracer_tag"    />
+        <result property="sources"    column="sources"    />
+        <result property="screenTag"    column="screen_tag"    />
+        <result property="traMethod"    column="tra_method"    />
+        <result property="chTraMethod"    column="ch_tra_method"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="orderIf"    column="order_if"    />
+    </resultMap>
+
+    <sql id="selectPlasmidVo">
+        select id, register_id, tracer_tag, sources, screen_tag, tra_method, ch_tra_method, delete_flag, order_if from plasmid
+    </sql>
+
+    <select id="selectPlasmidList" parameterType="Plasmid" resultMap="PlasmidResult">
+        <include refid="selectPlasmidVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="registerId != null "> and register_id = #{registerId}</if>
+            <if test="tracerTag != null  and tracerTag != ''"> and tracer_tag = #{tracerTag}</if>
+            <if test="sources != null  and sources != ''"> and sources = #{sources}</if>
+            <if test="screenTag != null  and screenTag != ''"> and screen_tag = #{screenTag}</if>
+            <if test="traMethod != null  and traMethod != ''"> and tra_method = #{traMethod}</if>
+            <if test="chTraMethod != null  and chTraMethod != ''"> and ch_tra_method = #{chTraMethod}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+            <if test="orderIf != null "> and order_if = #{orderIf}</if>
+        </where>
+    </select>
+    
+    <select id="selectPlasmidById" parameterType="Long" resultMap="PlasmidResult">
+        <include refid="selectPlasmidVo"/>
+        where id = #{id}
+    </select>
+
+
+    <select id="findPlasmidByOrderId" parameterType="Long" resultMap="PlasmidResult">
+        <include refid="selectPlasmidVo"/>
+        where register_id = #{orderId} and order_if = #{orderIf}
+    </select>
+
+    <insert id="insertPlasmid" parameterType="Plasmid" useGeneratedKeys="true" keyProperty="id">
+        insert into plasmid
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">register_id,</if>
+            <if test="tracerTag != null">tracer_tag,</if>
+            <if test="sources != null">sources,</if>
+            <if test="screenTag != null">screen_tag,</if>
+            <if test="traMethod != null">tra_method,</if>
+            <if test="chTraMethod != null">ch_tra_method,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+            <if test="orderIf != null">order_if,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">#{registerId},</if>
+            <if test="tracerTag != null">#{tracerTag},</if>
+            <if test="sources != null">#{sources},</if>
+            <if test="screenTag != null">#{screenTag},</if>
+            <if test="traMethod != null">#{traMethod},</if>
+            <if test="chTraMethod != null">#{chTraMethod},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+            <if test="orderIf != null">#{orderIf},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlasmid" parameterType="Plasmid">
+        update plasmid
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="registerId != null">register_id = #{registerId},</if>
+            <if test="tracerTag != null">tracer_tag = #{tracerTag},</if>
+            <if test="sources != null">sources = #{sources},</if>
+            <if test="screenTag != null">screen_tag = #{screenTag},</if>
+            <if test="traMethod != null">tra_method = #{traMethod},</if>
+            <if test="chTraMethod != null">ch_tra_method = #{chTraMethod},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+            <if test="orderIf != null">order_if = #{orderIf},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlasmidById" parameterType="Long">
+        delete from plasmid where id = #{id}
+    </delete>
+
+    <delete id="deletePlasmidByIds" parameterType="String">
+        delete from plasmid where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

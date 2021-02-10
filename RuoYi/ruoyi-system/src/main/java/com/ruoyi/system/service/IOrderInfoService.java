@@ -1,7 +1,6 @@
 package com.ruoyi.system.service;
 
-import com.ruoyi.system.domain.OrderAndSanFang;
-import com.ruoyi.system.domain.OrderInfo;
+import com.ruoyi.system.domain.*;
 
 import java.util.List;
 
@@ -64,9 +63,30 @@ public interface IOrderInfoService
     OrderAndSanFang selectOrderInfoByCheckUserId(Integer checkUserId);
 
 
-    OrderAndSanFang selectOrderInfoByOrderUserId(Integer OrderUserId);
+    OrderAndSanFang selectOrderInfoByOrderUserId(Integer OrderUserId,Integer checkState);
+
+    OrderAndSanFang selectOrderInfoByOrderUserId(Integer orderUserId, Integer checkUserId,Integer checkState);
 
     int saveAndUpdateOrder(OrderAndSanFang orderAndSanFang);
 
     int updateCheckState(Integer id, Integer checkState);
+
+    List<Userinfo> findUserByCheckUser(Integer checkUserId,Integer checkState);
+
+    Antibody findAntiBodyByOrderId(Integer orderId);
+
+    Plasmid findPlasmidByOrderId(Integer orderId);
+
+    Cell findCellByOrderId(Integer orderId);
+
+    Microbial findMicrobialByOrderId(Integer orderId);
+
+    Animal findAnimalByOrderId(Integer orderId);
+
+    OrderPic findOrderPicByOrderId(Integer orderId);
+
+    int findOrderCount(Integer checkUserId);
+
+    List<OrderInfo> searchOrderData(List<Integer> userIdList, String searchTem);
+
 }

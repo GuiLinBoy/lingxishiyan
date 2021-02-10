@@ -1,12 +1,9 @@
 package com.ruoyi.web.controller.weChat;
 
-import com.ruoyi.system.domain.RegisterInfo;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.service.IRegisterInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,10 +40,42 @@ public class RegisterController {
      **/
     @ResponseBody
     @RequestMapping("/saveAndUpdateRegisterInfo")
-    public int saveAndUpdateRegisterInfo(@RequestBody RegisterInfo registerInfo){
-        if (registerInfo != null){
-            return registerInfoService.saveAndUpdateRegisterInfo(registerInfo);
-        }else return 0;
+    public int saveAndUpdateRegisterInfo(@RequestBody RegisterInfoTool registerInfoTool){
+        Integer registerId = null;
+        if (registerInfoTool.getRegisterInfo() != null){
+            registerId =  registerInfoService.saveAndUpdateRegisterInfo(registerInfoTool);
+        };
+        return registerId;
+    }
+
+    @ResponseBody
+    @PostMapping("/findAntiBodyByRegisterId")
+    public Antibody findAntiBodyByOrderId(Integer registerId){
+        return registerInfoService.findAntiBodyByOrderId(registerId);
+    }
+
+    @ResponseBody
+    @PostMapping("/findPlasmidByRegisterId")
+    public Plasmid findPlasmidByOrderId(Integer registerId){
+        return registerInfoService.findPlasmidByOrderId(registerId);
+    }
+
+    @ResponseBody
+    @PostMapping("/findCellByRegisterId")
+    public Cell findCellByOrderId(Integer registerId){
+        return registerInfoService.findCellByOrderId(registerId);
+    }
+
+    @ResponseBody
+    @PostMapping("/findMicrobialByRegisterId")
+    public Microbial findMicrobialByOrderId(Integer registerId){
+        return registerInfoService.findMicrobialByOrderId(registerId);
+    }
+
+    @ResponseBody
+    @PostMapping("/findAnimalByRegisterId")
+    public Animal findAnimalByOrderId(Integer registerId){
+        return registerInfoService.findAnimalByOrderId(registerId);
     }
 
 }

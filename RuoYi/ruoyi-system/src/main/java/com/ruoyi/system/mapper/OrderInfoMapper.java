@@ -1,6 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.ruoyi.system.domain.OrderInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -60,7 +61,19 @@ public interface OrderInfoMapper
      */
     public int deleteOrderInfoByIds(String[] ids);
 
-    List<OrderInfo> selectOrderInfoByCheckUserId(Integer checkUserId);
+    List<OrderInfo> selectOrderInfoByCheckUserIdAndState(@Param("checkUserId")Integer checkUserId,@Param("checkState")Integer checkState);
 
-    List<OrderInfo> selectOrderInfoByOrderUserId(Integer OrderUserId);
+    List<OrderInfo> selectOrderInfoByCheckUserId(@Param("checkUserId")Integer checkUserId);
+
+    List<OrderInfo> selectOrderInfoByOrderUserId(@Param("OrderUserId")Integer OrderUserId);
+
+    List<OrderInfo> selectOrderInfoByOrderUserIdAndcheckState(@Param("OrderUserId")Integer OrderUserId,@Param("checkState")Integer checkState);
+
+    int findOrderCount(Long OrderUserId);
+
+    List<OrderInfo> searchOrderData(@Param("userIdList") List<Integer> userIdList, @Param("searchTem") String searchTem);
+
+    List<OrderInfo> selectOrderInfoByOrderUserAndCheck(@Param("orderUserId")Integer orderUserId,@Param("checkUserId") Integer checkUserId);
+
+    List<OrderInfo> selectOrderInfoByOrderUserAndCheckState(@Param("orderUserId")Integer orderUserId,@Param("checkUserId") Integer checkUserId,@Param("checkState") Integer checkState);
 }

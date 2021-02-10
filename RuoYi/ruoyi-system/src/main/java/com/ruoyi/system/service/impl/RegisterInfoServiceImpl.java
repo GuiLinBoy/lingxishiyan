@@ -1,13 +1,12 @@
 package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.system.domain.RegisterInfo;
-import com.ruoyi.system.domain.Userinfo;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.mapper.RegisterInfoMapper;
-import com.ruoyi.system.service.IRegisterInfoService;
-import com.ruoyi.system.service.IUserinfoService;
+import com.ruoyi.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,21 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
     private RegisterInfoMapper registerInfoMapper;
 
     @Autowired
+    private IAntibodyService antibodyService;
+
+    @Autowired
     private IUserinfoService userinfoService;
+
+    @Autowired
+    private IPlasmidService plasmidService;
+
+    @Autowired
+    private ICellService cellService;
+
+    @Autowired
+    private IMicrobialService microbialService;
+    @Autowired
+    private IAnimalService animalService;
     /**
      * 查询登记信息
      * 
@@ -40,7 +53,7 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
         String realName = userinfo.getRealname();
         registerInfo.setRegisterUserName(realName);
 
-        List<Userinfo> userinfoList = userinfoService.findUserByGroupIdAunitid(userinfo.getUnitid().intValue(), userinfo.getResearchGroupId().intValue());
+        List<Userinfo> userinfoList = userinfoService.findUserByGroupIdAunitid(-1,userinfo.getUnitid().intValue(), userinfo.getResearchGroupId().intValue());
         List list = new ArrayList();
         list.add(registerInfo);
         list.add(userinfoList);
@@ -70,11 +83,91 @@ public class RegisterInfoServiceImpl implements IRegisterInfoService
     }
 
     @Override
-    public int saveAndUpdateRegisterInfo(RegisterInfo registerInfo) {
-        if (registerInfo.getId() != null){
-            return registerInfoMapper.updateRegisterInfo(registerInfo);
+    public List<RegisterInfo> searchRegisterData(List<Integer> userIdList, String searchTem) {
+        return registerInfoMapper.searchRegisterData(userIdList,searchTem);
+    }
+
+    @Override
+    public Antibody findAntiBodyByOrderId(Integer registerId) {
+        return antibodyService.findAntiBodyByOrderId(registerId.longValue(),0L);
+    }
+
+    @Override
+    public Plasmid findPlasmidByOrderId(Integer registerId) {
+        return plasmidService.findPlasmidByOrderId(registerId.longValue(),0L);
+    }
+
+    @Override
+    public Cell findCellByOrderId(Integer registerId) {
+        return cellService.findCellByOrderId(registerId.longValue(),0L);
+    }
+
+    @Override
+    public Microbial findMicrobialByOrderId(Integer registerId) {
+        return microbialService.findMicrobialByOrderId(registerId.longValue(),0L);
+    }
+
+    @Override
+    public Animal findAnimalByOrderId(Integer registerId) {
+        return animalService.findAnimalByOrderId(registerId.longValue(),0L);
+    }
+
+    @Transactional
+    @Override
+    public int saveAndUpdateRegisterInfo(RegisterInfoTool registerInfoTool) {
+        RegisterInfo registerInfo = registerInfoTool.getRegisterInfo();
+        Integer registerId = null;
+        if ( registerInfo.getId()!= null){
+            registerInfoMapper.updateRegisterInfo(registerInfo);
         }else
-            return registerInfoMapper.insertRegisterInfo(registerInfo);
+            registerInfoMapper.insertRegisterInfo(registerInfo);
+        registerId = registerInfo.getId().intValue();
+        if (registerInfoTool.getAntibody() != null){
+            Antibody antibody = registerInfoTool.getAntibody();
+            if(antibody.getId()== null){
+                antibody.setRegisterId(registerId.longValue());
+                antibodyService.insertAntibody(antibody);
+            }else {
+                antibodyService.updateAntibody(antibody);
+            }
+        }
+        if (registerInfoTool.getPlasmid() != null){
+            Plasmid plasmid = registerInfoTool.getPlasmid();
+            if(plasmid.getId()== null){
+                plasmid.setRegisterId(registerId.longValue());
+                plasmidService.insertPlasmid(plasmid);
+            }else {
+                plasmidService.updatePlasmid(plasmid);
+            }
+        }
+        if (registerInfoTool.getCell() != null){
+            Cell cell = registerInfoTool.getCell();
+            if(cell.getId()== null){
+                cell.setRegisterId(registerId.longValue());
+                cellService.insertCell(cell);
+            }else {
+                cellService.updateCell(cell);
+            }
+        }
+        if (registerInfoTool.getMicrobial() != null){
+            Microbial microbial = registerInfoTool.getMicrobial();
+            if(microbial.getId()== null){
+                microbial.setRegisterId(registerId.longValue());
+                microbialService.insertMicrobial(microbial);
+            }else {
+                microbialService.updateMicrobial(microbial);
+            }
+        }
+        if (registerInfoTool.getAnimal() !=null){
+            Animal animal = registerInfoTool.getAnimal();
+            if(animal.getId()== null){
+                animal.setRegisterId(registerId.longValue());
+                animalService.insertAnimal(animal);
+            }else {
+                animalService.updateAnimal(animal);
+            }
+        }
+        return registerId;
     }
 
     /**

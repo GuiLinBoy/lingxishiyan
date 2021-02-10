@@ -1,14 +1,16 @@
 package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.system.domain.OrderInfo;
+import com.ruoyi.system.domain.RegisterInfo;
 import com.ruoyi.system.domain.Userinfo;
 import com.ruoyi.system.mapper.UserinfoMapper;
-import com.ruoyi.system.service.IResearchGroupsService;
-import com.ruoyi.system.service.IUnitsService;
-import com.ruoyi.system.service.IUserinfoService;
+import com.ruoyi.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +31,12 @@ public class UserinfoServiceImpl implements IUserinfoService
 
     @Autowired
     private IUnitsService unitsService;
+
+    @Autowired
+    private IRegisterInfoService registerInfoService;
+
+    @Autowired
+    private IOrderInfoService orderInfoService;
     /**
      * 查询人员管理
      * 
@@ -48,13 +56,38 @@ public class UserinfoServiceImpl implements IUserinfoService
 
 
     @Override
-    public List<Userinfo> findUserByGroupIdAunitid(Integer unitid, Integer researchGroupId) {
-        return userinfoMapper.selectUserByGroupIdAunitid(unitid,researchGroupId);
+    public List<Userinfo> findUserByGroupIdAunitid(Integer userId,Integer unitid, Integer researchGroupId) {
+        return userinfoMapper.selectUserByGroupIdAunitid(userId,unitid,researchGroupId);
     }
 
     @Override
     public List<Userinfo> selectListLikeByRealName(String realName) {
         return userinfoMapper.selectListLikeByRealName(realName);
+    }
+
+    @Override
+    public List<Userinfo> selectRealNameByIds(List<Integer> userIdList) {
+        return userinfoMapper.selectRealNameByIds(userIdList);
+    }
+
+    @Transactional
+    @Override
+    public List searchData(Integer unitsId, Integer groupId, String searchTem) {
+        List<Userinfo> userinfoList = userinfoMapper.selectAllUserByGroupIdAunitid (unitsId,groupId);
+        List<Integer> userIdList = new ArrayList<Integer>();
+        if(userinfoList.size() == 0) return null;
+        for (Userinfo userinfo : userinfoList){
+            Long id = userinfo.getId();
+            if (id != null){
+                userIdList.add(id.intValue());
+            }
+        }
+        List<RegisterInfo> registerInfoList = registerInfoService.searchRegisterData(userIdList,searchTem);
+        List<OrderInfo>    orderInfoList    = orderInfoService.searchOrderData(userIdList,searchTem);
+        List List = new ArrayList<>();
+        List.add(registerInfoList);
+        List.add(orderInfoList);
+        return List;
     }
 
     @Override

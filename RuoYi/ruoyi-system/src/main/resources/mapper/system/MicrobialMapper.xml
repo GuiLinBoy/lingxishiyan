@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MicrobialMapper">
+    
+    <resultMap type="Microbial" id="MicrobialResult">
+        <result property="id"    column="id"    />
+        <result property="registerId"    column="register_id"    />
+        <result property="durgResist"    column="durg_resist"    />
+        <result property="ATCC"    column="ATCC"    />
+        <result property="microbialType"    column="microbial_type"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="orderIf"    column="order_if"    />
+    </resultMap>
+
+    <sql id="selectMicrobialVo">
+        select id, register_id, durg_resist, ATCC, microbial_type, delete_flag, order_if from microbial
+    </sql>
+
+    <select id="selectMicrobialList" parameterType="Microbial" resultMap="MicrobialResult">
+        <include refid="selectMicrobialVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="registerId != null "> and register_id = #{registerId}</if>
+            <if test="durgResist != null "> and durg_resist = #{durgResist}</if>
+            <if test="ATCC != null  and ATCC != ''"> and ATCC = #{ATCC}</if>
+            <if test="microbialType != null  and microbialType != ''"> and microbial_type = #{microbialType}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+            <if test="orderIf != null "> and order_if = #{orderIf}</if>
+        </where>
+    </select>
+    
+    <select id="selectMicrobialById" parameterType="Long" resultMap="MicrobialResult">
+        <include refid="selectMicrobialVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="findMicrobialByOrderId" parameterType="Long" resultMap="MicrobialResult">
+        <include refid="selectMicrobialVo"/>
+        where register_id = #{orderId} and order_if = #{orderIf}
+    </select>
+
+    <insert id="insertMicrobial" parameterType="Microbial" useGeneratedKeys="true" keyProperty="id">
+        insert into microbial
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">register_id,</if>
+            <if test="durgResist != null">durg_resist,</if>
+            <if test="ATCC != null">ATCC,</if>
+            <if test="microbialType != null">microbial_type,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+            <if test="orderIf != null">order_if,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="registerId != null">#{registerId},</if>
+            <if test="durgResist != null">#{durgResist},</if>
+            <if test="ATCC != null">#{ATCC},</if>
+            <if test="microbialType != null">#{microbialType},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+            <if test="orderIf != null">#{orderIf},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMicrobial" parameterType="Microbial">
+        update microbial
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="registerId != null">register_id = #{registerId},</if>
+            <if test="durgResist != null">durg_resist = #{durgResist},</if>
+            <if test="ATCC != null">ATCC = #{ATCC},</if>
+            <if test="microbialType != null">microbial_type = #{microbialType},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+            <if test="orderIf != null">order_if = #{orderIf},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMicrobialById" parameterType="Long">
+        delete from microbial where id = #{id}
+    </delete>
+
+    <delete id="deleteMicrobialByIds" parameterType="String">
+        delete from microbial where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
